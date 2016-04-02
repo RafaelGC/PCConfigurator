@@ -112,12 +112,12 @@ public class ProductSelectorController implements Initializable, EventHandler<Wi
         productTable.setItems(FXCollections.observableList(products));
     }
 
-    public Component getComponent() {
-        if (selectedProduct == null) {
-            return null;
-        }
-
-        return new Component(selectedProduct, Integer.parseInt(amountTextfield.getText()));
+    public Product getProduct() {
+        return selectedProduct;
+    }
+    
+    public int getAmount() {
+        return Integer.parseInt(amountTextfield.getText());
     }
 
     @FXML
@@ -131,7 +131,7 @@ public class ProductSelectorController implements Initializable, EventHandler<Wi
 
         selectedProduct = productTable.getSelectionModel().getSelectedItem();
 
-        if (selectedProduct != null) {
+        if (selectedProduct != null && !amountTextfield.getText().isEmpty()) {
             int amount = Integer.parseInt(amountTextfield.getText());
             if (amount > selectedProduct.getStock()) {
                 DialogController.open("Aviso", "No tenemos tantos componentes en stock.", DialogController.DialogType.Warning);

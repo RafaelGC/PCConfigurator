@@ -5,133 +5,155 @@
  */
 package model;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import es.upv.inf.Product;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- *
+ * @brief Define los elementos que componen un ordenador, tanto los obligatorios
+ * como los opcionales.
  * @author Rafa
  */
 public class PC {
-    private ArrayList<StructureComponent> components;
+
+    private ArrayList<Component> components;
     private String name;
-    private PCStructure structure;
-    
-    public PC(PCStructure structure) {
-        components = new ArrayList<StructureComponent>();
-        for (Iterator<PCStructureComponent> it = structure.iterator(); it.hasNext();) {
-            components.add(new StructureComponent(it.next(), null));
-        }
+
+    public PC() {
         name = "Sin nombre";
+
+        components = new ArrayList<Component>();
+
+        components.add(new Component(new ComponentDescription(Product.Category.CASE, ComponentDescription.ESSENTIAL)));
+        components.add(new Component(new ComponentDescription(Product.Category.MOTHERBOARD, ComponentDescription.ESSENTIAL)));
+        components.add(new Component(new ComponentDescription(Product.Category.CPU, ComponentDescription.ESSENTIAL)));
+        components.add(new Component(new ComponentDescription(Product.Category.RAM, ComponentDescription.ESSENTIAL)));
+        components.add(new Component(new ComponentDescription(Product.Category.GPU, ComponentDescription.ESSENTIAL)));
+
+        /*
+         components.add(new PCStructureComponent(Product.Category.HDD, true));
+         components.add(new PCStructureComponent(Product.Category.HDD_SSD, true));*/
+        Product.Category[] hddCats = {Product.Category.HDD, Product.Category.HDD_SSD};
+        components.add(new Component(new ComponentDescription(
+                new ArrayList<>(Arrays.asList(hddCats)),
+                CategoryNames.getName(Product.Category.HDD),
+                ComponentDescription.ESSENTIAL)));
+
+        components.add(new Component(new ComponentDescription(Product.Category.KEYBOARD, ComponentDescription.NON_ESSENTIAL)));
+        components.add(new Component(new ComponentDescription(Product.Category.MOUSE, ComponentDescription.NON_ESSENTIAL)));
+        components.add(new Component(new ComponentDescription(Product.Category.DVD_WRITER, ComponentDescription.NON_ESSENTIAL)));
+        components.add(new Component(new ComponentDescription(Product.Category.FAN, ComponentDescription.NON_ESSENTIAL)));
+        components.add(new Component(new ComponentDescription(Product.Category.MULTIREADER, ComponentDescription.NON_ESSENTIAL)));
+        components.add(new Component(new ComponentDescription(Product.Category.POWER_SUPPLY, ComponentDescription.NON_ESSENTIAL)));
+        components.add(new Component(new ComponentDescription(Product.Category.SCREEN, ComponentDescription.NON_ESSENTIAL)));
+        components.add(new Component(new ComponentDescription(Product.Category.SPEAKER, ComponentDescription.NON_ESSENTIAL)));
+
     }
     
-    public static PC loadFromFile(String fileName) {
-        PC pc = new PC(PCStructure.instance());
-        
-        for (Iterator<StructureComponent> it = pc.components.iterator(); it.hasNext();) {
-            //
+    public Component getComponentByComponentDescription(ComponentDescription cd) {
+        for (Iterator<Component> it = components.iterator(); it.hasNext();) {
+            Component cmp = it.next();
+            if (cmp.getComponentDescription().equals(cd)) {
+                return cmp;
+            }
         }
-        
-        return pc;
+        return null;
     }
-    
-    public boolean saveToFile(String fileName) {
-        try {
-            ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(fileName));
-            os.writeObject(getComponents());
-            
-            return true;
-            
-        } catch (FileNotFoundException ex) {
-            
-        } catch (IOException ex) {
+
+    public Iterator<Component> iterator() {
+        return components.iterator();
+    }
+
+    public ArrayList<Component> getEssentialComponents() {
+        ArrayList<Component> result = new ArrayList<Component>();
+
+        Iterator<Component> it = components.iterator();
+        while (it.hasNext()) {
+            Component cmp = it.next();
+            if (cmp.getComponentDescription().isEssential()) {
+                result.add(cmp);
+            }
         }
-        return false;
+        return result;
     }
-    
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
+
+    public ArrayList<Component> getNonEssentialComponents() {
+        ArrayList<Component> result = new ArrayList<Component>();
+
+        Iterator<Component> it = components.iterator();
+        while (it.hasNext()) {
+            Component cmp = it.next();
+            if (!cmp.getComponentDescription().isEssential()) {
+                result.add(cmp);
+            }
+        }
+        return result;
     }
 
     /**
-     * @param name the name to set
+     * Añade un cierta cantidad de productos al ordenador.
+     * @param product Producto que se añade.
+     * @param amount Cantidad de productos. Debe ser mayor que cero.
+     * @return Devuelve el componente añadido o null si no se ha podido añadir porque
+     * el ordenador no acepta ese tipo de componente.
      */
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    public void addComponent(Component component) {
-        Iterator<StructureComponent> it = components.iterator();
-        while (it.hasNext()) {
-            StructureComponent strComponent = it.next();
-            
-            if (strComponent.structureComponent.is(component.getProduct().getCategory())) {
-                strComponent.component = component;
+    public Component addProduct(Product product, int amount) {
+        if (amount <= 0) return null;
+        for (Iterator<Component> it = components.iterator(); it.hasNext();) {
+            Component cmp = it.next();
+            if (cmp.getComponentDescription().is(product.getCategory())) {
+
+                cmp.setProduct(product);
+                cmp.setAmount(amount);
+
+                return cmp;
             }
-            
         }
+        return null;
     }
     
+    /**
+     * @return Devuelve el precio del ordenador.
+     */
+    public Price getPrice() {
+        double sum = 0.d;
+        for (Iterator<Component> it = components.iterator(); it.hasNext();) {
+            Component cmp = it.next();
+            if (cmp.hasProduct()) {
+                sum += cmp.getTotalPrice();
+            }
+        }
+        return new Price(sum);
+    }
+
+    /**
+     * 
+     * @return True si todos los compotentes necesarios tienen un producto vinculado. 
+     */
     public boolean isComplete() {
-        for (Iterator<StructureComponent> it = components.iterator(); it.hasNext();) {
-            StructureComponent sc = it.next();
-            if (sc.structureComponent.isEssential() && sc.component == null) {
+        for (Iterator<Component> it = components.iterator(); it.hasNext();) {
+            Component cmp = it.next();
+            if (cmp.getComponentDescription().isEssential() && !cmp.hasProduct()) {
                 return false;
             }
         }
         return true;
     }
-    
-    public List<Component> getComponents() {
-        ArrayList<Component> components = new ArrayList<Component>();
-        
-        for (Iterator<StructureComponent> it = this.components.iterator(); it.hasNext();) {
-            components.add(it.next().component);
-        }
-        
-        return components;
-    }
-    
+
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(name).append("\n");
         sb.append("=================\n");
-        
-        for (Iterator<model.StructureComponent> it = components.iterator(); it.hasNext();) {
-            model.StructureComponent sc = it.next();
-            if (sc.component != null)
-            sb.append(sc.component.toString(true)).append("\n");
+
+        for (Iterator<Component> it = components.iterator(); it.hasNext();) {
+            Component component = it.next();
+            if (component.hasProduct()) {
+                sb.append(component).append("\n");
+            }
         }
         sb.append("=================\n").append(getPrice());
         return sb.toString();
     }
-    
-    public Price getPrice() {
-        double sum = 0.d;
-        for (Iterator<model.StructureComponent> it = components.iterator(); it.hasNext();) {
-            model.StructureComponent sc = it.next();
-            if (sc.component != null)
-                sum += sc.component.getTotalPrice();
-        }
-        return new Price(sum);
-    }
-}
 
-class StructureComponent {
-    public PCStructureComponent structureComponent;
-    public Component component;
-    public StructureComponent(PCStructureComponent a, Component b) {
-        structureComponent = a;
-        component = b;
-    }
 }

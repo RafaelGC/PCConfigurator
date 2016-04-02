@@ -13,19 +13,21 @@ import java.util.List;
  *
  * @author Rafa
  */
-public class PCStructureComponent {
+public class ComponentDescription {
+    public static final boolean ESSENTIAL = true, NON_ESSENTIAL = false;
+    
     private ArrayList<Product.Category> categories;
     private String name;
     private boolean essential;
     
-    PCStructureComponent(Product.Category category, boolean essential) {
+    ComponentDescription(Product.Category category, boolean essential) {
         this.categories = new ArrayList<Product.Category>();
         categories.add(category);
         this.name = CategoryNames.getName(category);
         this.essential = essential;
     }
     
-    PCStructureComponent(ArrayList<Product.Category> categories, String name, boolean essential) {
+    ComponentDescription(ArrayList<Product.Category> categories, String name, boolean essential) {
         this.categories = categories;
         this.name = name;
         this.essential = essential;
@@ -65,6 +67,15 @@ public class PCStructureComponent {
      */
     public void setEssential(boolean essential) {
         this.essential = essential;
+    }
+    
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof ComponentDescription) {
+            ComponentDescription cd = (ComponentDescription) other;
+            return cd.essential = this.essential && cd.name.compareTo(this.name) == 0 && cd.categories.equals(cd.categories);
+        }
+        return false;
     }
     
     

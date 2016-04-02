@@ -16,9 +16,9 @@ public class Price {
     public double price, tax, totalPrice;
 
     public Price(double price) {
-        this.price = price;
-        this.tax = (TAX / 100) * price;
-        this.totalPrice = price + tax;
+        this.price = round2(price);
+        this.tax = round2((TAX / 100) * price);
+        this.totalPrice = round2(price + tax);
     }
     
     public double getTax() {
@@ -36,5 +36,9 @@ public class Price {
     @Override
     public String toString() {
         return price +""+ SYMBOL + ", IVA: " + tax + SYMBOL + " (" + TAX + "%)" + " TOTAL: " + totalPrice + SYMBOL;
+    }
+    
+    private static double round2(double num) {
+        return Math.round(num*100)/100.d;
     }
 }

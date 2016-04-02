@@ -24,7 +24,7 @@ public class PCConfigurator extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainScreen.fxml"));
         Parent root = (Parent) loader.load();
         MainScreenController controller = loader.<MainScreenController>getController();
-        controller.initStage(stage);
+        controller.init(stage);
         
         Scene scene = new Scene(root);
         stage.setScene(scene);

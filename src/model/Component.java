@@ -12,14 +12,20 @@ import java.io.Serializable;
  *
  * @author Rafa
  */
-public class Component implements Serializable{
+public class Component implements Serializable {
 
     private Product product;
     private int amount;
+    private ComponentDescription componentDescription;
 
-    public Component(Product product, int amount) {
-        this.product = product;
-        this.amount = amount;
+    public Component(ComponentDescription componentDescription) {
+        this.componentDescription = componentDescription;
+        amount = 0;
+        product = null;
+    }
+
+    public ComponentDescription getComponentDescription() {
+        return this.componentDescription;
     }
 
     /**
@@ -35,18 +41,48 @@ public class Component implements Serializable{
     public int getAmount() {
         return amount;
     }
-    
-    public String toString() {
-        return product.getDescription() + "\t" + " x" + amount;
+
+    /**
+     * @param product the product to set
+     */
+    public void setProduct(Product product) {
+        this.product = product;
     }
     
-    public String toString(boolean addPrice) {
-        if (!addPrice) return toString();
-        return product.getDescription() + "\t" + product.getPrice() + Price.SYMBOL + " x" + amount + " = " + getTotalPrice() + Price.SYMBOL;
+    public boolean hasProduct() {
+        return product != null;
     }
-    
+
+    /**
+     * @param amount the amount to set
+     */
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
     public double getTotalPrice() {
-        return product.getPrice() * amount;
+        return getProduct().getPrice() * getAmount();
+    }
+
+    @Override
+    public String toString() {
+        if (product != null) {
+            return product.getDescription() + "\t" + " x" + getAmount();
+        } else {
+            return "Sin seleccionar";
+        }
+    }
+
+    public String toString(boolean addPrice) {
+        if (product != null) {
+            if (!addPrice) {
+                return toString();
+            }
+            return product.getDescription() + "\t" + getProduct().getPrice() + Price.SYMBOL + " x" + getAmount() + " = " + getTotalPrice() + Price.SYMBOL;
+        }
+        else {
+            return "";
+        }
     }
 
 }

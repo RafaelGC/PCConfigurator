@@ -5,13 +5,13 @@
  */
 package listeners;
 
-import model.PCStructureComponent;
-import view.ConfiguratorRow;
+import model.ComponentDescription;
+import controller.ConfiguratorRow;
 
 /**
  *
  * @author Rafa
  */
 public interface ConfiguratorRowListener {
-    public void setProductFor(PCStructureComponent component, ConfiguratorRow row);
+    public void setProductFor(ComponentDescription component, ConfiguratorRow row);
 }

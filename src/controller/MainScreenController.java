@@ -44,7 +44,7 @@ public class MainScreenController implements Initializable {
         mainLayout.getStylesheets().add(getClass().getResource("/css/CustomButtons.css").toExternalForm());
     }
 
-    public void initStage(Stage stage) {
+    public void init(Stage stage) {
         this.stage = stage;
     }
 

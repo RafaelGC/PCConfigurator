@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox fx:id="root" prefHeight="500.0" prefWidth="700.0" spacing="15.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.BudgetController">
+  <children>
+    <FlowPane prefHeight="-1.0" prefWidth="200.0" rowValignment="TOP" VBox.vgrow="NEVER">
+      <children>
+        <ImageView fitHeight="90.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
+          <image>
+            <Image url="@../pictures/pccomponentes.png" />
+          </image>
+        </ImageView>
+        <VBox id="VBox" alignment="TOP_LEFT" spacing="5.0">
+          <children>
+            <Label maxWidth="1.7976931348623157E308" minWidth="-Infinity" text="PCComponentes">
+              <font>
+                <Font size="36.0" />
+              </font>
+            </Label>
+            <Label text="Presupuesto" />
+          </children>
+        </VBox>
+      </children>
+    </FlowPane>
+    <ScrollPane prefHeight="200.0" prefWidth="200.0" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS">
+      <content>
+        <VBox id="productListLayout" fx:id="productsLayout" fillWidth="true" maxHeight="-1.0" maxWidth="1.7976931348623157E308" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" spacing="5.0" style="" />
+      </content>
+    </ScrollPane>
+    <GridPane id="GridPane" hgap="20.0" vgap="15.0" VBox.vgrow="ALWAYS">
+      <children>
+        <Label text="Subtotal" GridPane.columnIndex="0" GridPane.rowIndex="0">
+          <font>
+            <Font size="16.0" fx:id="x1" />
+          </font>
+        </Label>
+        <Label font="$x1" text="IVA" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <Label text="Total" GridPane.columnIndex="0" GridPane.rowIndex="2">
+          <font>
+            <Font size="20.0" fx:id="x2" />
+          </font>
+        </Label>
+        <Label fx:id="price" font="$x1" maxWidth="1.7976931348623157E308" text="XXXX€" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" />
+        <Label id="taxes" fx:id="tax" font="$x1" text="XXXX€" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Label fx:id="totalPrice" font="$x2" text="XXXX€" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      </children>
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-1.0" minWidth="-1.0" />
+      </columnConstraints>
+      <rowConstraints>
+        <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+    </GridPane>
+    <FlowPane prefHeight="-1.0" prefWidth="200.0" rowValignment="TOP" VBox.vgrow="NEVER">
+      <children>
+        <HBox prefHeight="-1.0" prefWidth="-1.0">
+          <children>
+            <Label text="Fecha de elaboración del presupuesto:">
+              <HBox.margin>
+                <Insets right="10.0" fx:id="x3" />
+              </HBox.margin>
+            </Label>
+            <Label fx:id="date" text="00/00/0000" />
+          </children>
+          <FlowPane.margin>
+            <Insets right="15.0" />
+          </FlowPane.margin>
+        </HBox>
+        <Label text="El presupuesto vence en 7 días.">
+          <font>
+            <Font name="System Bold" size="12.0" />
+          </font>
+        </Label>
+      </children>
+    </FlowPane>
+    <HBox prefHeight="-1.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="NEVER">
+      <children>
+        <HBox prefHeight="-1.0" prefWidth="200.0" spacing="15.0" HBox.hgrow="ALWAYS">
+          <children>
+            <Button mnemonicParsing="false" onAction="#back" text="Modificar" />
+          </children>
+        </HBox>
+        <Button mnemonicParsing="false" onAction="#save" text="Guardar" />
+        <Button mnemonicParsing="false" onAction="#print" text="Imprimir presupuesto">
+          <HBox.margin>
+            <Insets />
+          </HBox.margin>
+        </Button>
+        <Button mnemonicParsing="false" onAction="#finish" text="Terminar" />
+      </children>
+    </HBox>
+  </children>
+  <padding>
+    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+  </padding>
+</VBox>

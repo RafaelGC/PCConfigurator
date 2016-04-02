@@ -19,36 +19,65 @@
       <tabs>
         <Tab text="Componentes imprescindibles">
           <content>
-            <GridPane id="GridPane" fx:id="essentialComponentsLayout">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" vgrow="NEVER" />
-              </rowConstraints>
-            </GridPane>
+            <ScrollPane id="ScrollPane" fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefViewportHeight="341.0" prefViewportWidth="680.0">
+              <content>
+                <GridPane id="GridPane" fx:id="essentialComponentsLayout" hgap="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="5.0">
+                  <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                  </columnConstraints>
+                  <padding>
+                    <Insets top="5.0" fx:id="x1" />
+                  </padding>
+                  <rowConstraints>
+                    <RowConstraints minHeight="10.0" vgrow="NEVER" />
+                  </rowConstraints>
+                </GridPane>
+              </content>
+            </ScrollPane>
           </content>
         </Tab>
         <Tab text="Componentes optativos">
           <content>
-            <GridPane id="GridPane" fx:id="nonEssentialComponentsLayout">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" vgrow="NEVER" />
-              </rowConstraints>
-            </GridPane>
+            <ScrollPane id="ScrollPane" fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefViewportHeight="341.0" prefViewportWidth="680.0">
+              <content>
+                <GridPane id="GridPane" fx:id="nonEssentialComponentsLayout" hgap="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" padding="$x1" vgap="5.0">
+                  <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                    <RowConstraints minHeight="10.0" vgrow="NEVER" />
+                  </rowConstraints>
+                </GridPane>
+              </content>
+            </ScrollPane>
           </content>
         </Tab>
       </tabs>
     </TabPane>
+    <HBox prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="NEVER">
+      <children>
+        <Label text="Precio (IVA incl.):">
+          <font>
+            <Font size="18.0" fx:id="x2" />
+          </font>
+          <HBox.margin>
+            <Insets right="15.0" />
+          </HBox.margin>
+        </Label>
+        <Label fx:id="price" font="$x2" text="0€" />
+      </children>
+    </HBox>
     <HBox alignment="BOTTOM_RIGHT" prefHeight="30.0" prefWidth="200.0" spacing="15.0" VBox.vgrow="NEVER">
       <children>
-        <Button fx:id="save" mnemonicParsing="false" onAction="#save" text="Guardar" />
-        <Button mnemonicParsing="false" text="Finalizar" />
+        <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+          <children>
+            <Button mnemonicParsing="false" onAction="#cancel" text="Cancelar" />
+          </children>
+        </HBox>
+        <Button id="save" mnemonicParsing="false" onAction="#save" text="Guardar" />
+        <Button mnemonicParsing="false" onAction="#next" text="Ver presupuesto" />
       </children>
     </HBox>
   </children>
