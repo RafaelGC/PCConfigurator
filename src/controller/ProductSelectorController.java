@@ -22,14 +22,15 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import model.CategoryNames;
-import model.Component;
 
 /**
  * FXML Controller class
@@ -37,7 +38,7 @@ import model.Component;
  * @author Rafa
  */
 public class ProductSelectorController implements Initializable, EventHandler<WindowEvent>, ChangeListener<String> {
-
+    
     @FXML
     private Insets x1;
     @FXML
@@ -54,7 +55,7 @@ public class ProductSelectorController implements Initializable, EventHandler<Wi
     private TableColumn<Product, String> categoryColumn;
     @FXML
     private TextField amountTextfield;
-
+    
     Product selectedProduct;
     Stage stage;
     List<Product.Category> visibleCategories;
@@ -65,18 +66,18 @@ public class ProductSelectorController implements Initializable, EventHandler<Wi
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         selectedProduct = null;
-
+        
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<Product, String>("description"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<Product, String>("price"));
         stockColumn.setCellValueFactory(new PropertyValueFactory<Product, String>("stock"));
-
+        
         categoryColumn.setCellValueFactory(new Callback<CellDataFeatures<Product, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(CellDataFeatures<Product, String> p) {
                 return new SimpleStringProperty(CategoryNames.getName(p.getValue().getCategory()));
             }
         });
-
+        
         searchTextfield.textProperty().addListener(this);
 
         //Sólo númeos.
@@ -90,13 +91,23 @@ public class ProductSelectorController implements Initializable, EventHandler<Wi
                 }
             }
         });
+        
+        productTable.setRowFactory(tv -> {
+            TableRow<Product> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    accept(null);
+                }
+            });
+            return row;
+        });
     }
-
+    
     private void setStage(Stage stage) {
         this.stage = stage;
         stage.setOnCloseRequest(this);
     }
-
+    
     public void initStage(Stage stage, List<Product.Category> categories) {
         setStage(stage);
         this.visibleCategories = categories;
@@ -104,14 +115,14 @@ public class ProductSelectorController implements Initializable, EventHandler<Wi
         for (Product.Category category : categories) {
             products.addAll(Database.getProductByCategory(category));
         }
-
+        
         updateTable(products);
     }
-
+    
     private void updateTable(List<Product> products) {
         productTable.setItems(FXCollections.observableList(products));
     }
-
+    
     public Product getProduct() {
         return selectedProduct;
     }
@@ -119,32 +130,30 @@ public class ProductSelectorController implements Initializable, EventHandler<Wi
     public int getAmount() {
         return Integer.parseInt(amountTextfield.getText());
     }
-
+    
     @FXML
     private void reject(ActionEvent event) {
         selectedProduct = null;
         stage.close();
     }
-
+    
     @FXML
     private void accept(ActionEvent event) {
-
+        
         selectedProduct = productTable.getSelectionModel().getSelectedItem();
-
+        
         if (selectedProduct != null && !amountTextfield.getText().isEmpty()) {
             int amount = Integer.parseInt(amountTextfield.getText());
             if (amount > selectedProduct.getStock()) {
                 DialogController.open("Aviso", "No tenemos tantos componentes en stock.", DialogController.DialogType.Warning);
-            }
-            else {
+            } else {
                 stage.close();
             }
-        }
-        else {
+        } else {
             stage.close();
         }
     }
-
+    
     @Override
     public void handle(WindowEvent event) {
         if (event.getEventType() == WindowEvent.WINDOW_CLOSE_REQUEST) {
@@ -152,15 +161,15 @@ public class ProductSelectorController implements Initializable, EventHandler<Wi
             stage.close();
         }
     }
-
+    
     @Override
     public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
         List<Product> products = new ArrayList<>();
         for (Product.Category category : visibleCategories) {
             products.addAll(Database.getProductByCategoryAndDescription(category, newValue, true));
         }
-
+        
         updateTable(products);
     }
-
+    
 }

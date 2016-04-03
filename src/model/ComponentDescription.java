@@ -6,28 +6,40 @@
 package model;
 
 import es.upv.inf.Product;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Rafa
  */
+@XmlRootElement(name = "component-description")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ComponentDescription {
     public static final boolean ESSENTIAL = true, NON_ESSENTIAL = false;
     
+    @XmlElement(name = "categories")
     private ArrayList<Product.Category> categories;
+    @XmlElement(name = "name")
     private String name;
+    @XmlElement(name = "essential")
     private boolean essential;
     
-    ComponentDescription(Product.Category category, boolean essential) {
+    public ComponentDescription() {}
+    
+    public ComponentDescription(Product.Category category, boolean essential) {
         this.categories = new ArrayList<Product.Category>();
         categories.add(category);
         this.name = CategoryNames.getName(category);
         this.essential = essential;
     }
     
-    ComponentDescription(ArrayList<Product.Category> categories, String name, boolean essential) {
+    public ComponentDescription(ArrayList<Product.Category> categories, String name, boolean essential) {
         this.categories = categories;
         this.name = name;
         this.essential = essential;
@@ -73,7 +85,7 @@ public class ComponentDescription {
     public boolean equals(Object other) {
         if (other instanceof ComponentDescription) {
             ComponentDescription cd = (ComponentDescription) other;
-            return cd.essential = this.essential && cd.name.compareTo(this.name) == 0 && cd.categories.equals(cd.categories);
+            return cd.essential == this.essential && cd.name.compareTo(this.name) == 0 && cd.categories.equals(cd.categories);
         }
         return false;
     }

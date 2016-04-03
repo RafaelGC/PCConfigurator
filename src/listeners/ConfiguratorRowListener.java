@@ -14,4 +14,5 @@ import controller.ConfiguratorRow;
  */
 public interface ConfiguratorRowListener {
     public void setProductFor(ComponentDescription component, ConfiguratorRow row);
+    public void removeProductFor(ComponentDescription component, ConfiguratorRow row);
 }

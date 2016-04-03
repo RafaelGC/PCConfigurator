@@ -24,6 +24,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
@@ -40,7 +41,7 @@ import model.Price;
 public class BudgetController implements Initializable {
 
     @FXML
-    private VBox productsLayout;
+    private GridPane productsLayout;
     @FXML
     private Font x1;
     @FXML
@@ -72,10 +73,27 @@ public class BudgetController implements Initializable {
         this.pc = pc;
         this.stage = stage;
 
+        int y = 1;
         for (Iterator<Component> it = pc.iterator(); it.hasNext();) {
             Component c = it.next();
             if (c.hasProduct()) {
-                productsLayout.getChildren().add(new Label(c.toString(true)));
+                Label tmp = new Label(c.getProduct().getDescription());
+                productsLayout.getChildren().add(tmp);
+                GridPane.setConstraints(tmp, 0, y);
+
+                tmp = new Label(c.getProduct().getPrice() + "" + Price.SYMBOL);
+                productsLayout.getChildren().add(tmp);
+                GridPane.setConstraints(tmp, 1, y);
+
+                tmp = new Label("x" + c.getAmount());
+                productsLayout.getChildren().add(tmp);
+                GridPane.setConstraints(tmp, 2, y);
+
+                tmp = new Label(c.getTotalPrice() + "" + Price.SYMBOL);
+                productsLayout.getChildren().add(tmp);
+                GridPane.setConstraints(tmp, 3, y);
+
+                y++;
             }
         }
 

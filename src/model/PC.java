@@ -6,18 +6,36 @@
 package model;
 
 import es.upv.inf.Product;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * @brief Define los elementos que componen un ordenador, tanto los obligatorios
  * como los opcionales.
  * @author Rafa
  */
+@XmlRootElement(name = "pc")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class PC {
 
+    @XmlElement(name = "component")
     private ArrayList<Component> components;
+    @XmlElement(name = "name")
     private String name;
 
     public PC() {
@@ -50,7 +68,7 @@ public class PC {
         components.add(new Component(new ComponentDescription(Product.Category.SPEAKER, ComponentDescription.NON_ESSENTIAL)));
 
     }
-    
+
     public Component getComponentByComponentDescription(ComponentDescription cd) {
         for (Iterator<Component> it = components.iterator(); it.hasNext();) {
             Component cmp = it.next();
@@ -66,7 +84,7 @@ public class PC {
     }
 
     public ArrayList<Component> getEssentialComponents() {
-        ArrayList<Component> result = new ArrayList<Component>();
+        ArrayList<Component> result = new ArrayList<>();
 
         Iterator<Component> it = components.iterator();
         while (it.hasNext()) {
@@ -79,7 +97,7 @@ public class PC {
     }
 
     public ArrayList<Component> getNonEssentialComponents() {
-        ArrayList<Component> result = new ArrayList<Component>();
+        ArrayList<Component> result = new ArrayList<>();
 
         Iterator<Component> it = components.iterator();
         while (it.hasNext()) {
@@ -93,13 +111,16 @@ public class PC {
 
     /**
      * Añade un cierta cantidad de productos al ordenador.
+     *
      * @param product Producto que se añade.
      * @param amount Cantidad de productos. Debe ser mayor que cero.
-     * @return Devuelve el componente añadido o null si no se ha podido añadir porque
-     * el ordenador no acepta ese tipo de componente.
+     * @return Devuelve el componente añadido o null si no se ha podido añadir
+     * porque el ordenador no acepta ese tipo de componente.
      */
     public Component addProduct(Product product, int amount) {
-        if (amount <= 0) return null;
+        if (amount <= 0) {
+            return null;
+        }
         for (Iterator<Component> it = components.iterator(); it.hasNext();) {
             Component cmp = it.next();
             if (cmp.getComponentDescription().is(product.getCategory())) {
@@ -112,7 +133,7 @@ public class PC {
         }
         return null;
     }
-    
+
     /**
      * @return Devuelve el precio del ordenador.
      */
@@ -128,8 +149,9 @@ public class PC {
     }
 
     /**
-     * 
-     * @return True si todos los compotentes necesarios tienen un producto vinculado. 
+     *
+     * @return True si todos los compotentes necesarios tienen un producto
+     * vinculado.
      */
     public boolean isComplete() {
         for (Iterator<Component> it = components.iterator(); it.hasNext();) {
@@ -141,19 +163,49 @@ public class PC {
         return true;
     }
 
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(name).append("\n");
         sb.append("=================\n");
 
-        for (Iterator<Component> it = components.iterator(); it.hasNext();) {
-            Component component = it.next();
+        for (Component component : components) {
             if (component.hasProduct()) {
                 sb.append(component).append("\n");
             }
         }
         sb.append("=================\n").append(getPrice());
         return sb.toString();
+    }
+
+    public boolean saveToFile(File file) {
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(PC.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            //Marshal the employees list in console
+            //jaxbMarshaller.marshal(this, System.out);
+            jaxbMarshaller.marshal(this, file);
+            return true;
+        } catch (JAXBException ex) {
+            Logger.getLogger(PC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public static PC load(String fileName) {
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(PC.class);
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            
+            //We had written this file in marshalling example
+            return (PC) jaxbUnmarshaller.unmarshal(new File(fileName));
+        } catch (JAXBException ex) {
+            Logger.getLogger(PC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
 }

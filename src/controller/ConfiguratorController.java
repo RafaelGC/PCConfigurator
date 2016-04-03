@@ -7,6 +7,7 @@ package controller;
 
 import controller.DialogController.Response;
 import es.upv.inf.Product;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
@@ -25,6 +26,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import listeners.ConfiguratorRowListener;
@@ -63,7 +66,7 @@ public class ConfiguratorController implements Initializable, ConfiguratorRowLis
     }
 
     public void initStage(Stage stage) {
-        initStage(stage, new PC());
+        initStage(stage, PC.load("computer.txt"));
     }
 
     public void initStage(Stage stage, PC pc) {
@@ -91,19 +94,27 @@ public class ConfiguratorController implements Initializable, ConfiguratorRowLis
     }
 
     @Override
-    public void setProductFor(ComponentDescription structureComponent, ConfiguratorRow row) {
+    public void setProductFor(ComponentDescription description, ConfiguratorRow row) {
 
-        Pair<Product, Integer> productAmount = openProductSelectorWindow(structureComponent.getCategories());
+        Pair<Product, Integer> productAmount = openProductSelectorWindow(description.getCategories());
         if (productAmount.first != null) {
 
-            Component added = currentPC.addProduct(productAmount.first, productAmount.second);
-            row.getButton().setText(added.toString());
+            currentPC.addProduct(productAmount.first, productAmount.second);
+            row.update();
             System.out.println(currentPC.toString());
 
             updatePrice();
 
         }
 
+    }
+
+    @Override
+    public void removeProductFor(ComponentDescription description, ConfiguratorRow row) {
+        Component c = currentPC.getComponentByComponentDescription(description);
+        c.setProduct(null);
+        row.update();
+        updatePrice();
     }
 
     private void updatePrice() {
@@ -135,12 +146,18 @@ public class ConfiguratorController implements Initializable, ConfiguratorRowLis
 
     @FXML
     private void save(ActionEvent event) {
-        /*if (currentPC.saveToFile("computer.txt")) {
-         DialogController.open("Guardado", "La configuración ha sido guardada con éxito.", DialogController.DialogType.Ok);
-         }
-         else {
-         DialogController.open("Error", "La configuración no ha podido ser guardada.", DialogController.DialogType.Error);
-         }*/
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Guardar ordenador");
+        fileChooser.getExtensionFilters().add(new ExtensionFilter("Archivo XML (*.xml)", "*.xml"));
+        File file = fileChooser.showSaveDialog(stage);
+        if (file != null) {
+            if (currentPC.saveToFile(file)) {
+                DialogController.open("Guardado", "La configuración ha sido guardada con éxito.", DialogController.DialogType.Ok);
+            } else {
+                DialogController.open("Error", "La configuración no ha podido ser guardada.", DialogController.DialogType.Error);
+            }
+        }
     }
 
     @FXML

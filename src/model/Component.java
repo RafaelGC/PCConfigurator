@@ -6,17 +6,34 @@
 package model;
 
 import es.upv.inf.Product;
-import java.io.Serializable;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Rafa
  */
-public class Component implements Serializable {
+@XmlRootElement(name = "component")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Component {
 
-    private Product product;
+    @XmlElement(name = "product")
+    private model.Product product;
+    @XmlElement(name = "amount")
     private int amount;
+    @XmlElement(name = "component-description")
     private ComponentDescription componentDescription;
+    //@XmlElement(name = "product-description")
+    //private String productDescription; //Como la clase Product no se puede guardar en XML, se guarda sólo la descripción.
+
+    public Component() {
+        product = null;
+        amount = 0;
+        componentDescription = null;
+    }
 
     public Component(ComponentDescription componentDescription) {
         this.componentDescription = componentDescription;
@@ -46,9 +63,14 @@ public class Component implements Serializable {
      * @param product the product to set
      */
     public void setProduct(Product product) {
-        this.product = product;
+        if (product == null) {
+            this.product = null;
+        } else {
+            this.product = new model.Product(product);
+            //this.productDescription = product.getDescription();
+        }
     }
-    
+
     public boolean hasProduct() {
         return product != null;
     }
@@ -79,9 +101,8 @@ public class Component implements Serializable {
                 return toString();
             }
             return product.getDescription() + "\t" + getProduct().getPrice() + Price.SYMBOL + " x" + getAmount() + " = " + getTotalPrice() + Price.SYMBOL;
-        }
-        else {
-            return "";
+        } else {
+            return "Sin seleccionar";
         }
     }
 

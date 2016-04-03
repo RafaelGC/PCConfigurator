@@ -20,35 +20,40 @@ import model.ComponentDescription;
  * @author Rafa
  */
 public class ConfiguratorRow implements EventHandler<ActionEvent> {
+
     private final Node[] nodes;
     private final SplitMenuButton button;
     private final ConfiguratorRowListener listener;
+    private final MenuItem remove;
     private Component component;
-    
+
     public ConfiguratorRow(Component component, ConfiguratorRowListener listener) {
         nodes = new Node[2];
         this.listener = listener;
-        
+
         Label label = new Label(component.getComponentDescription().getName());
-        
+
         button = new SplitMenuButton();
         button.setOnAction(this);
         button.setText(component.toString());
-        MenuItem remove = new MenuItem("Eliminar");
+        remove = new MenuItem("Eliminar");
+        remove.setOnAction(this);
         remove.setDisable(true);
         button.getItems().add(remove);
         button.setMaxWidth(Double.MAX_VALUE);
-        
+
         nodes[0] = label;
         nodes[1] = button;
-        
+
         this.component = component;
+        
+        update();
     }
-    
+
     public Node[] getNodes() {
         return nodes;
     }
-    
+
     public SplitMenuButton getButton() {
         return button;
     }
@@ -56,8 +61,30 @@ public class ConfiguratorRow implements EventHandler<ActionEvent> {
     @Override
     public void handle(ActionEvent event) {
         if (listener != null) {
-            listener.setProductFor(component.getComponentDescription(), this);
+            if (event.getSource() == button) {
+                listener.setProductFor(component.getComponentDescription(), this);
+            } else if (event.getSource() == remove) {
+                listener.removeProductFor(component.getComponentDescription(), this);
+            }
         }
     }
-    
+
+    private void enableRemove() {
+        remove.setDisable(false);
+    }
+
+    private void disableRemove() {
+        remove.setDisable(true);
+    }
+
+    public void update() {
+        if (component.hasProduct()) {
+            enableRemove();
+        }
+        else {
+            disableRemove();
+        }
+        button.setText(component.toString());
+    }
+
 }
