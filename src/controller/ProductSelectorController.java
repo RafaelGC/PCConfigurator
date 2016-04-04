@@ -26,7 +26,6 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
@@ -38,7 +37,7 @@ import model.CategoryNames;
  * @author Rafa
  */
 public class ProductSelectorController implements Initializable, EventHandler<WindowEvent>, ChangeListener<String> {
-    
+
     @FXML
     private Insets x1;
     @FXML
@@ -55,10 +54,14 @@ public class ProductSelectorController implements Initializable, EventHandler<Wi
     private TableColumn<Product, String> categoryColumn;
     @FXML
     private TextField amountTextfield;
-    
+
     Product selectedProduct;
     Stage stage;
     List<Product.Category> visibleCategories;
+    @FXML
+    private TextField minPrice;
+    @FXML
+    private TextField maxPrice;
 
     /**
      * Initializes the controller class.
@@ -66,19 +69,21 @@ public class ProductSelectorController implements Initializable, EventHandler<Wi
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         selectedProduct = null;
-        
+
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<Product, String>("description"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<Product, String>("price"));
         stockColumn.setCellValueFactory(new PropertyValueFactory<Product, String>("stock"));
-        
+
         categoryColumn.setCellValueFactory(new Callback<CellDataFeatures<Product, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(CellDataFeatures<Product, String> p) {
                 return new SimpleStringProperty(CategoryNames.getName(p.getValue().getCategory()));
             }
         });
-        
+
         searchTextfield.textProperty().addListener(this);
+        minPrice.textProperty().addListener(this);
+        maxPrice.textProperty().addListener(this);
 
         //Sólo númeos.
         amountTextfield.textProperty().addListener(new ChangeListener<String>() {
@@ -91,7 +96,8 @@ public class ProductSelectorController implements Initializable, EventHandler<Wi
                 }
             }
         });
-        
+
+        //Para que se seleccione el producto cuando se hace doble clic sobre la fila de la tabla.
         productTable.setRowFactory(tv -> {
             TableRow<Product> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
@@ -101,13 +107,14 @@ public class ProductSelectorController implements Initializable, EventHandler<Wi
             });
             return row;
         });
+
     }
-    
+
     private void setStage(Stage stage) {
         this.stage = stage;
         stage.setOnCloseRequest(this);
     }
-    
+
     public void initStage(Stage stage, List<Product.Category> categories) {
         setStage(stage);
         this.visibleCategories = categories;
@@ -115,45 +122,36 @@ public class ProductSelectorController implements Initializable, EventHandler<Wi
         for (Product.Category category : categories) {
             products.addAll(Database.getProductByCategory(category));
         }
-        
+
         updateTable(products);
     }
-    
+
     private void updateTable(List<Product> products) {
         productTable.setItems(FXCollections.observableList(products));
     }
-    
+
     public Product getProduct() {
         return selectedProduct;
     }
-    
+
     public int getAmount() {
         return Integer.parseInt(amountTextfield.getText());
     }
-    
+
     @FXML
     private void reject(ActionEvent event) {
         selectedProduct = null;
         stage.close();
     }
-    
+
     @FXML
     private void accept(ActionEvent event) {
-        
+
         selectedProduct = productTable.getSelectionModel().getSelectedItem();
-        
-        if (selectedProduct != null && !amountTextfield.getText().isEmpty()) {
-            int amount = Integer.parseInt(amountTextfield.getText());
-            if (amount > selectedProduct.getStock()) {
-                DialogController.open("Aviso", "No tenemos tantos componentes en stock.", DialogController.DialogType.Warning);
-            } else {
-                stage.close();
-            }
-        } else {
-            stage.close();
-        }
+
+        stage.close();
     }
-    
+
     @Override
     public void handle(WindowEvent event) {
         if (event.getEventType() == WindowEvent.WINDOW_CLOSE_REQUEST) {
@@ -161,15 +159,40 @@ public class ProductSelectorController implements Initializable, EventHandler<Wi
             stage.close();
         }
     }
-    
+
     @Override
     public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+        String search = searchTextfield.textProperty() == observable ? newValue : searchTextfield.getText();
+        String minPriceString = minPrice.textProperty() == observable ? newValue : minPrice.getText();
+        String maxPriceString = maxPrice.textProperty() == observable ? newValue : maxPrice.getText();
+
+        double minValue = 0.f, maxValue = Double.MAX_VALUE;
+
+        if (!minPriceString.isEmpty()) {
+            try {
+                minValue = Math.max(Double.parseDouble(minPriceString), 0.d);
+                minPrice.setStyle("-fx-text-fill: black;");
+            } catch (NumberFormatException e) {
+                minPrice.setStyle("-fx-text-fill: red;");
+            }
+        }
+
+        if (!maxPriceString.isEmpty()) {
+            try {
+                maxValue = Double.parseDouble(maxPriceString);
+                maxPrice.setStyle("-fx-text-fill: black;");
+            } catch (NumberFormatException e) {
+                maxPrice.setStyle("-fx-text-fill: red;");
+            }
+        }
+
         List<Product> products = new ArrayList<>();
         for (Product.Category category : visibleCategories) {
-            products.addAll(Database.getProductByCategoryAndDescription(category, newValue, true));
+            //products.addAll(Database.getProductByCategoryAndDescription(category, newValue, true));
+            products.addAll(Database.getProductByCategoryDescriptionAndPrice(category, search, minValue, maxValue, true));
         }
-        
+
         updateTable(products);
     }
-    
+
 }

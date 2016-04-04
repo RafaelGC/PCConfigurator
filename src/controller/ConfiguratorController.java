@@ -5,16 +5,18 @@
  */
 package controller;
 
-import controller.DialogController.Response;
 import es.upv.inf.Product;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,8 +24,12 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
@@ -57,16 +63,21 @@ public class ConfiguratorController implements Initializable, ConfiguratorRowLis
     private Font x2;
     @FXML
     private Label price;
+    @FXML
+    private TextField name;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    }
+        name.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                currentPC.setName(newValue);
+            }
 
-    public void initStage(Stage stage) {
-        initStage(stage, PC.load("computer.txt"));
+        });
     }
 
     public void initStage(Stage stage, PC pc) {
@@ -88,6 +99,8 @@ public class ConfiguratorController implements Initializable, ConfiguratorRowLis
             nonEssentialComponentsLayout.addRow(rowCount, row.getNodes());
             rowCount++;
         }
+
+        name.setText(pc.getName());
 
         updatePrice();
 
@@ -144,20 +157,31 @@ public class ConfiguratorController implements Initializable, ConfiguratorRowLis
         return null;
     }
 
-    @FXML
-    private void save(ActionEvent event) {
-
+    public static void savePCDialog(PC pc, Stage stage) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Guardar ordenador");
         fileChooser.getExtensionFilters().add(new ExtensionFilter("Archivo XML (*.xml)", "*.xml"));
         File file = fileChooser.showSaveDialog(stage);
         if (file != null) {
-            if (currentPC.saveToFile(file)) {
-                DialogController.open("Guardado", "La configuración ha sido guardada con éxito.", DialogController.DialogType.Ok);
+            if (pc.saveToFile(file)) {
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setHeaderText(null);
+                alert.setTitle("Guardado");
+                alert.setContentText("La configuración ha sido guardada con éxito.");
+                alert.showAndWait();
             } else {
-                DialogController.open("Error", "La configuración no ha podido ser guardada.", DialogController.DialogType.Error);
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setHeaderText(null);
+                alert.setTitle("Error");
+                alert.setContentText("La configuración no pudo ser guardada.");
+                alert.showAndWait();
             }
         }
+    }
+
+    @FXML
+    private void save(ActionEvent event) {
+        savePCDialog(currentPC, stage);
     }
 
     @FXML
@@ -166,17 +190,23 @@ public class ConfiguratorController implements Initializable, ConfiguratorRowLis
             boolean open = true;
 
             if (!currentPC.isComplete()) {
-                DialogController.Response res = DialogController.open(
-                        "¿Seguro?",
-                        "No has seleccionado todos los componentes esenciales. ¿Seguro que has terminado de configurar tu PC?",
-                        DialogController.DialogType.Warning,
-                        DialogController.Buttons.Yes_No);
-
-                if (res != DialogController.Response.Yes) {
-
-                    open = false;
-
+                
+                ButtonType yes = new ButtonType("Sí", ButtonData.YES);
+                ButtonType no = new ButtonType("No", ButtonData.NO);
+                
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setHeaderText(null);
+                alert.getButtonTypes().clear();
+                alert.getButtonTypes().addAll(yes, no);
+                alert.setTitle("¿Seguro?");
+                alert.setContentText("No has seleccionado todos los componentes esenciales. ¿Seguro que has terminado de configurar tu PC?");
+                Optional<ButtonType> res = alert.showAndWait();
+                if (res.isPresent()) {
+                    if (res.get() != yes) {
+                        open = false;
+                    }
                 }
+                
             }
 
             if (open) {
@@ -197,20 +227,14 @@ public class ConfiguratorController implements Initializable, ConfiguratorRowLis
     @FXML
     private void cancel(ActionEvent event) {
         try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainScreen.fxml"));
+            Parent root = (Parent) loader.load();
+            MainScreenController controller = loader.<MainScreenController>getController();
+            controller.init(stage);
 
-            Response res = DialogController.open("¿Seguro?",
-                    "Si abandonas el configurador perderás la configuración "
-                    + "que no hayas guardado. ¿Quieres abandonar?", DialogController.DialogType.Warning, DialogController.Buttons.Yes_No);
-            if (res == Response.Yes) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainScreen.fxml"));
-                Parent root = (Parent) loader.load();
-                MainScreenController controller = loader.<MainScreenController>getController();
-                controller.init(stage);
-
-                Scene scene = new Scene(root);
-                stage.setScene(scene);
-                stage.show();
-            }
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
         } catch (IOException ex) {
             Logger.getLogger(ConfiguratorController.class.getName()).log(Level.SEVERE, null, ex);
         }

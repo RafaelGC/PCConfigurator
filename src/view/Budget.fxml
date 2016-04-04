@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="root" prefHeight="500.0" prefWidth="700.0" spacing="15.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.BudgetController">
+<VBox fx:id="root" prefHeight="500.0" prefWidth="700.0" spacing="15.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BudgetController">
   <children>
     <FlowPane prefHeight="-1.0" prefWidth="200.0" rowValignment="TOP" VBox.vgrow="NEVER">
       <children>
@@ -25,7 +25,7 @@
                 <Font size="36.0" />
               </font>
             </Label>
-            <Label text="Presupuesto" />
+            <Label fx:id="budgetLabel" text="Presupuesto" />
           </children>
         </VBox>
       </children>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pc>
+    <component>
+        <product>
+            <description>unyka caja matx uk 6011 500w negra</description>
+            <price>28.84</price>
+            <stock>55</stock>
+            <category>CASE</category>
+        </product>
+        <amount>1</amount>
+        <component-description>
+            <categories>CASE</categories>
+            <name>Torre</name>
+            <essential>true</essential>
+        </component-description>
+    </component>
+    <component>
+        <product>
+            <description>asrock fm2a58m.vg3+ r2.0 2ddr3 vga gblan matx</description>
+            <price>39.5</price>
+            <stock>5</stock>
+            <category>MOTHERBOARD</category>
+        </product>
+        <amount>1</amount>
+        <component-description>
+            <categories>MOTHERBOARD</categories>
+            <name>Placa base</name>
+            <essential>true</essential>
+        </component-description>
+    </component>
+    <component>
+        <product>
+            <description>intel core i5 4460 3.20ghz 6mb lga1150</description>
+            <price>165.54</price>
+            <stock>21</stock>
+            <category>CPU</category>
+        </product>
+        <amount>1</amount>
+        <component-description>
+            <categories>CPU</categories>
+            <name>Procesador</name>
+            <essential>true</essential>
+        </component-description>
+    </component>
+    <component>
+        <product>
+            <description>kingston 8gb 1600 ddr3 cl10 dimm hyperx furyser</description>
+            <price>34.05</price>
+            <stock>108</stock>
+            <category>RAM</category>
+        </product>
+        <amount>1</amount>
+        <component-description>
+            <categories>RAM</categories>
+            <name>RAM</name>
+            <essential>true</essential>
+        </component-description>
+    </component>
+    <component>
+        <product>
+            <description>gigabyte vga gtx 750 ti oc 2gb ddr5</description>
+            <price>110.66</price>
+            <stock>396</stock>
+            <category>GPU</category>
+        </product>
+        <amount>1</amount>
+        <component-description>
+            <categories>GPU</categories>
+            <name>Tarjeta gráfica</name>
+            <essential>true</essential>
+        </component-description>
+    </component>
+    <component>
+        <product>
+            <description>toshiba hdd 3.5 1tb 32mb sata3 7200rpm</description>
+            <price>39.17</price>
+            <stock>785</stock>
+            <category>HDD</category>
+        </product>
+        <amount>1</amount>
+        <component-description>
+            <categories>HDD</categories>
+            <categories>HDD_SSD</categories>
+            <name>Disco duro</name>
+            <essential>true</essential>
+        </component-description>
+    </component>
+    <component>
+        <amount>0</amount>
+        <component-description>
+            <categories>KEYBOARD</categories>
+            <name>Teclado</name>
+            <essential>false</essential>
+        </component-description>
+    </component>
+    <component>
+        <amount>0</amount>
+        <component-description>
+            <categories>MOUSE</categories>
+            <name>Ratón</name>
+            <essential>false</essential>
+        </component-description>
+    </component>
+    <component>
+        <product>
+            <description>lg dvd rw gtc0n slim interna negra</description>
+            <price>17.69</price>
+            <stock>17</stock>
+            <category>DVD_WRITER</category>
+        </product>
+        <amount>1</amount>
+        <component-description>
+            <categories>DVD_WRITER</categories>
+            <name>Lector DVD</name>
+            <essential>false</essential>
+        </component-description>
+    </component>
+    <component>
+        <amount>0</amount>
+        <component-description>
+            <categories>FAN</categories>
+            <name>Ventilador</name>
+            <essential>false</essential>
+        </component-description>
+    </component>
+    <component>
+        <amount>0</amount>
+        <component-description>
+            <categories>MULTIREADER</categories>
+            <name>Multilector</name>
+            <essential>false</essential>
+        </component-description>
+    </component>
+    <component>
+        <product>
+            <description>tooq fa 700w atx v2.3 pfc activo 14cm. c.velocidad</description>
+            <price>32.89</price>
+            <stock>55</stock>
+            <category>POWER_SUPPLY</category>
+        </product>
+        <amount>1</amount>
+        <component-description>
+            <categories>POWER_SUPPLY</categories>
+            <name>Fuente de alimentación</name>
+            <essential>false</essential>
+        </component-description>
+    </component>
+    <component>
+        <amount>0</amount>
+        <component-description>
+            <categories>SCREEN</categories>
+            <name>Pantalla</name>
+            <essential>false</essential>
+        </component-description>
+    </component>
+    <component>
+        <amount>0</amount>
+        <component-description>
+            <categories>SPEAKER</categories>
+            <name>Altavoces</name>
+            <essential>false</essential>
+        </component-description>
+    </component>
+    <name>PC Gama media</name>
+</pc>

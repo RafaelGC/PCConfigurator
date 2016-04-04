@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox id="mainLayout" prefHeight="500.0" prefWidth="700.0" spacing="15.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.ConfiguratorController">
+<VBox id="mainLayout" prefHeight="500.0" prefWidth="700.0" spacing="15.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ConfiguratorController">
   <children>
     <Label text="Configurador">
       <font>
@@ -86,7 +86,7 @@
       <children>
         <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
           <children>
-            <Button mnemonicParsing="false" onAction="#cancel" text="Cancelar" />
+            <Button mnemonicParsing="false" onAction="#cancel" text="Volver" />
           </children>
         </HBox>
         <Button id="save" mnemonicParsing="false" onAction="#save" text="Guardar" />

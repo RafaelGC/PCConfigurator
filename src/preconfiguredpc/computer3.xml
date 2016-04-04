@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pc>
+    <component>
+        <product>
+            <description>unyka caja matx uk 6011 500w negra</description>
+            <price>28.84</price>
+            <stock>55</stock>
+            <category>CASE</category>
+        </product>
+        <amount>1</amount>
+        <component-description>
+            <categories>CASE</categories>
+            <name>Torre</name>
+            <essential>true</essential>
+        </component-description>
+    </component>
+    <component>
+        <product>
+            <description>asus am1i.a 2ddr3 32gb vga+hdmi+dvi 2sata3 gblan</description>
+            <price>30.17</price>
+            <stock>6</stock>
+            <category>MOTHERBOARD</category>
+        </product>
+        <amount>1</amount>
+        <component-description>
+            <categories>MOTHERBOARD</categories>
+            <name>Placa base</name>
+            <essential>true</essential>
+        </component-description>
+    </component>
+    <component>
+        <product>
+            <description>intel core i3.4130 3.4ghz s1150 3mb</description>
+            <price>102.56</price>
+            <stock>2</stock>
+            <category>CPU</category>
+        </product>
+        <amount>1</amount>
+        <component-description>
+            <categories>CPU</categories>
+            <name>Procesador</name>
+            <essential>true</essential>
+        </component-description>
+    </component>
+    <component>
+        <product>
+            <description>kingston 4gb 1600 ddr3 cl10 dimm hyperx furyser</description>
+            <price>19.09</price>
+            <stock>228</stock>
+            <category>RAM</category>
+        </product>
+        <amount>1</amount>
+        <component-description>
+            <categories>RAM</categories>
+            <name>RAM</name>
+            <essential>true</essential>
+        </component-description>
+    </component>
+    <component>
+        <product>
+            <description>gigabyte vga gtx 750 ti oc 2gb ddr5</description>
+            <price>110.66</price>
+            <stock>396</stock>
+            <category>GPU</category>
+        </product>
+        <amount>1</amount>
+        <component-description>
+            <categories>GPU</categories>
+            <name>Tarjeta gráfica</name>
+            <essential>true</essential>
+        </component-description>
+    </component>
+    <component>
+        <product>
+            <description>seagate 1tb sata3 7200 64mb barracuda</description>
+            <price>43.31</price>
+            <stock>182</stock>
+            <category>HDD</category>
+        </product>
+        <amount>1</amount>
+        <component-description>
+            <categories>HDD</categories>
+            <categories>HDD_SSD</categories>
+            <name>Disco duro</name>
+            <essential>true</essential>
+        </component-description>
+    </component>
+    <component>
+        <product>
+            <description>teclado logitech k120 negro oem usb</description>
+            <price>12.81</price>
+            <stock>44</stock>
+            <category>KEYBOARD</category>
+        </product>
+        <amount>1</amount>
+        <component-description>
+            <categories>KEYBOARD</categories>
+            <name>Teclado</name>
+            <essential>false</essential>
+        </component-description>
+    </component>
+    <component>
+        <product>
+            <description>raton optico logitech b100 negro</description>
+            <price>8.6</price>
+            <stock>42</stock>
+            <category>MOUSE</category>
+        </product>
+        <amount>1</amount>
+        <component-description>
+            <categories>MOUSE</categories>
+            <name>Ratón</name>
+            <essential>false</essential>
+        </component-description>
+    </component>
+    <component>
+        <product>
+            <description>regrabadora dvdrw lg gh24nsd1 sata negra</description>
+            <price>11.98</price>
+            <stock>228</stock>
+            <category>DVD_WRITER</category>
+        </product>
+        <amount>1</amount>
+        <component-description>
+            <categories>DVD_WRITER</categories>
+            <name>Lector DVD</name>
+            <essential>false</essential>
+        </component-description>
+    </component>
+    <component>
+        <amount>0</amount>
+        <component-description>
+            <categories>FAN</categories>
+            <name>Ventilador</name>
+            <essential>false</essential>
+        </component-description>
+    </component>
+    <component>
+        <amount>0</amount>
+        <component-description>
+            <categories>MULTIREADER</categories>
+            <name>Multilector</name>
+            <essential>false</essential>
+        </component-description>
+    </component>
+    <component>
+        <product>
+            <description>high tech atx 600w ce pfc 20.24pin 4+4 12x12 negro</description>
+            <price>26.45</price>
+            <stock>3</stock>
+            <category>POWER_SUPPLY</category>
+        </product>
+        <amount>1</amount>
+        <component-description>
+            <categories>POWER_SUPPLY</categories>
+            <name>Fuente de alimentación</name>
+            <essential>false</essential>
+        </component-description>
+    </component>
+    <component>
+        <product>
+            <description>hanns g he196apb monitor 18.5 led multimedia</description>
+            <price>71.16</price>
+            <stock>112</stock>
+            <category>SCREEN</category>
+        </product>
+        <amount>1</amount>
+        <component-description>
+            <categories>SCREEN</categories>
+            <name>Pantalla</name>
+            <essential>false</essential>
+        </component-description>
+    </component>
+    <component>
+        <amount>0</amount>
+        <component-description>
+            <categories>SPEAKER</categories>
+            <name>Altavoces</name>
+            <essential>false</essential>
+        </component-description>
+    </component>
+    <name>PC + Pantalla + Teclado + Ratón</name>
+</pc>

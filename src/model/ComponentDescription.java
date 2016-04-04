@@ -29,20 +29,24 @@ public class ComponentDescription {
     private String name;
     @XmlElement(name = "essential")
     private boolean essential;
+    @XmlElement(name = "description")
+    private String description;
     
     public ComponentDescription() {}
     
-    public ComponentDescription(Product.Category category, boolean essential) {
+    public ComponentDescription(Product.Category category, boolean essential, String description) {
         this.categories = new ArrayList<Product.Category>();
         categories.add(category);
         this.name = CategoryNames.getName(category);
         this.essential = essential;
+        this.description = description;
     }
     
-    public ComponentDescription(ArrayList<Product.Category> categories, String name, boolean essential) {
+    public ComponentDescription(ArrayList<Product.Category> categories, String name, boolean essential, String description) {
         this.categories = categories;
         this.name = name;
         this.essential = essential;
+        this.description = description;
     }
     
     public boolean is(Product.Category cat) {
@@ -88,6 +92,20 @@ public class ComponentDescription {
             return cd.essential == this.essential && cd.name.compareTo(this.name) == 0 && cd.categories.equals(cd.categories);
         }
         return false;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
     
     

@@ -7,9 +7,9 @@ package model;
 
 import es.upv.inf.Product;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -41,13 +41,34 @@ public class PC {
     public PC() {
         name = "Sin nombre";
 
-        components = new ArrayList<Component>();
-
-        components.add(new Component(new ComponentDescription(Product.Category.CASE, ComponentDescription.ESSENTIAL)));
-        components.add(new Component(new ComponentDescription(Product.Category.MOTHERBOARD, ComponentDescription.ESSENTIAL)));
-        components.add(new Component(new ComponentDescription(Product.Category.CPU, ComponentDescription.ESSENTIAL)));
-        components.add(new Component(new ComponentDescription(Product.Category.RAM, ComponentDescription.ESSENTIAL)));
-        components.add(new Component(new ComponentDescription(Product.Category.GPU, ComponentDescription.ESSENTIAL)));
+        
+        //Definición de los componentes que forman un ordenador.
+        components = new ArrayList<>();
+        
+        components.add(new Component(new ComponentDescription(
+                                            Product.Category.CASE,
+                                            ComponentDescription.ESSENTIAL,
+                                            ComponentTextDescriptions.CASE)));
+        
+        components.add(new Component(new ComponentDescription(
+                                            Product.Category.MOTHERBOARD,
+                                            ComponentDescription.ESSENTIAL,
+                                            ComponentTextDescriptions.MOTHERBOARD)));
+        
+        components.add(new Component(new ComponentDescription(
+                                            Product.Category.CPU,
+                                            ComponentDescription.ESSENTIAL,
+                                            ComponentTextDescriptions.CPU)));
+        
+        components.add(new Component(new ComponentDescription(
+                                            Product.Category.RAM,
+                                            ComponentDescription.ESSENTIAL,
+                                            ComponentTextDescriptions.RAM)));
+        
+        components.add(new Component(new ComponentDescription(
+                                            Product.Category.GPU,
+                                            ComponentDescription.ESSENTIAL,
+                                            ComponentTextDescriptions.GPU)));
 
         /*
          components.add(new PCStructureComponent(Product.Category.HDD, true));
@@ -56,16 +77,17 @@ public class PC {
         components.add(new Component(new ComponentDescription(
                 new ArrayList<>(Arrays.asList(hddCats)),
                 CategoryNames.getName(Product.Category.HDD),
-                ComponentDescription.ESSENTIAL)));
+                ComponentDescription.ESSENTIAL,
+                ComponentTextDescriptions.HDD)));
 
-        components.add(new Component(new ComponentDescription(Product.Category.KEYBOARD, ComponentDescription.NON_ESSENTIAL)));
-        components.add(new Component(new ComponentDescription(Product.Category.MOUSE, ComponentDescription.NON_ESSENTIAL)));
-        components.add(new Component(new ComponentDescription(Product.Category.DVD_WRITER, ComponentDescription.NON_ESSENTIAL)));
-        components.add(new Component(new ComponentDescription(Product.Category.FAN, ComponentDescription.NON_ESSENTIAL)));
-        components.add(new Component(new ComponentDescription(Product.Category.MULTIREADER, ComponentDescription.NON_ESSENTIAL)));
-        components.add(new Component(new ComponentDescription(Product.Category.POWER_SUPPLY, ComponentDescription.NON_ESSENTIAL)));
-        components.add(new Component(new ComponentDescription(Product.Category.SCREEN, ComponentDescription.NON_ESSENTIAL)));
-        components.add(new Component(new ComponentDescription(Product.Category.SPEAKER, ComponentDescription.NON_ESSENTIAL)));
+        components.add(new Component(new ComponentDescription(Product.Category.KEYBOARD, ComponentDescription.NON_ESSENTIAL, "")));
+        components.add(new Component(new ComponentDescription(Product.Category.MOUSE, ComponentDescription.NON_ESSENTIAL, "")));
+        components.add(new Component(new ComponentDescription(Product.Category.DVD_WRITER, ComponentDescription.NON_ESSENTIAL, "")));
+        components.add(new Component(new ComponentDescription(Product.Category.FAN, ComponentDescription.NON_ESSENTIAL, "")));
+        components.add(new Component(new ComponentDescription(Product.Category.MULTIREADER, ComponentDescription.NON_ESSENTIAL, "")));
+        components.add(new Component(new ComponentDescription(Product.Category.POWER_SUPPLY, ComponentDescription.NON_ESSENTIAL, "")));
+        components.add(new Component(new ComponentDescription(Product.Category.SCREEN, ComponentDescription.NON_ESSENTIAL, "")));
+        components.add(new Component(new ComponentDescription(Product.Category.SPEAKER, ComponentDescription.NON_ESSENTIAL, "")));
 
     }
 
@@ -166,7 +188,7 @@ public class PC {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(name).append("\n");
+        sb.append(getName()).append("\n");
         sb.append("=================\n");
 
         for (Component component : components) {
@@ -185,8 +207,6 @@ public class PC {
 
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
-            //Marshal the employees list in console
-            //jaxbMarshaller.marshal(this, System.out);
             jaxbMarshaller.marshal(this, file);
             return true;
         } catch (JAXBException ex) {
@@ -195,17 +215,39 @@ public class PC {
         return false;
     }
 
-    public static PC load(String fileName) {
+    public static PC loadFromFile(File file) {
+        try {
+            return loadFromStream(new FileInputStream(file));
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(PC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public static PC loadFromStream(InputStream stream) {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(PC.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             
-            //We had written this file in marshalling example
-            return (PC) jaxbUnmarshaller.unmarshal(new File(fileName));
+            return (PC) jaxbUnmarshaller.unmarshal(stream);
         } catch (JAXBException ex) {
             Logger.getLogger(PC.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

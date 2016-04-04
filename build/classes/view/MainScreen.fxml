@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.geometry.*?>
@@ -9,14 +10,14 @@
 <?import javafx.scene.text.*?>
 <?scenebuilder-stylesheet ../css/CustomButtons.css?>
 
-<VBox fx:id="mainLayout" prefHeight="500.0" prefWidth="700.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.MainScreenController">
+<VBox fx:id="mainLayout" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainScreenController">
   <children>
     <Label text="Configura tu PC">
       <font>
         <Font size="36.0" />
       </font>
     </Label>
-    <GridPane hgap="5.0">
+    <GridPane hgap="5.0" VBox.vgrow="ALWAYS">
       <children>
         <Label text="PC preconfigurados" GridPane.columnIndex="0" GridPane.rowIndex="0">
           <font>
@@ -27,17 +28,26 @@
         <Label font="$x1" text="Nueva configuración" GridPane.columnIndex="2" GridPane.rowIndex="0" />
         <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
           <children>
-            <Button maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-1.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="-1.0" style="&#10;" styleClass="big-button" text="PC Gama alta" />
-            <Button maxWidth="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" prefHeight="60.0" styleClass="big-button" text="PC Gama media" />
-            <Button maxWidth="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" prefHeight="60.0" styleClass="big-button" text="PC Gama baja" />
+            <Button fx:id="computer1Button" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-1.0" mnemonicParsing="false" onAction="#preconfiguredPC" prefHeight="60.0" prefWidth="-1.0" style="&#10;" styleClass="big-button" text="PC Gama alta" />
+            <Button fx:id="computer2Button" maxWidth="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" onAction="#preconfiguredPC" prefHeight="60.0" styleClass="big-button" text="PC Gama media" />
+            <Button fx:id="computer3Button" maxWidth="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" onAction="#preconfiguredPC" prefHeight="60.0" styleClass="big-button" text="PC + Pantalla + Teclado" />
           </children>
         </VBox>
         <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
           <children>
-            <Button maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-1.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="-1.0" style="&#10;" styleClass="big-button" text="Configurador paso a paso" />
-            <Button maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-1.0" mnemonicParsing="false" onAction="#goToConfigurator" prefHeight="60.0" prefWidth="-1.0" style="&#10;" styleClass="big-button" text="Configurador avanzado" />
+            <Button maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-1.0" mnemonicParsing="false" onAction="#stepBySepConfigurator" prefHeight="60.0" prefWidth="-1.0" style="&#10;" text="Configurador paso a paso">
+                     <styleClass>
+                        <String fx:value="big-button" />
+                        <String fx:value="primary" />
+                     </styleClass></Button>
+            <Button maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-1.0" mnemonicParsing="false" onAction="#advancedConfigurator" prefHeight="60.0" prefWidth="-1.0" style="&#10;" styleClass="big-button" text="Configurador avanzado" />
           </children>
         </VBox>
+            <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="317.0" prefViewportWidth="223.0" style="-fx-background-color: transparent;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <content>
+                  <VBox fx:id="userConfigurationsLayout" spacing="5.0" style="-fx-background-color: transparent;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+               </content>
+            </ScrollPane>
       </children>
       <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -49,6 +59,16 @@
         <RowConstraints minHeight="10.0" prefHeight="-1.0" vgrow="ALWAYS" />
       </rowConstraints>
     </GridPane>
+      <HBox alignment="TOP_RIGHT" prefWidth="200.0">
+         <children>
+            <Button maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-1.0" mnemonicParsing="false" onAction="#loadConfiguration" prefHeight="60.0" prefWidth="-1.0" style="&#10;" text="Cargar configuración">
+               <styleClass>
+                  <String fx:value="big-button" />
+                  <String fx:value="primary" />
+               </styleClass>
+            </Button>
+         </children>
+      </HBox>
   </children>
   <padding>
     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

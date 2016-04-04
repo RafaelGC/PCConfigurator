@@ -13,7 +13,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SplitMenuButton;
 import listeners.ConfiguratorRowListener;
 import model.Component;
-import model.ComponentDescription;
 
 /**
  *
@@ -23,6 +22,7 @@ public class ConfiguratorRow implements EventHandler<ActionEvent> {
 
     private final Node[] nodes;
     private final SplitMenuButton button;
+    private final Label label;
     private final ConfiguratorRowListener listener;
     private final MenuItem remove;
     private Component component;
@@ -31,7 +31,7 @@ public class ConfiguratorRow implements EventHandler<ActionEvent> {
         nodes = new Node[2];
         this.listener = listener;
 
-        Label label = new Label(component.getComponentDescription().getName());
+        label = new Label(component.getComponentDescription().getName());
 
         button = new SplitMenuButton();
         button.setOnAction(this);
@@ -56,6 +56,10 @@ public class ConfiguratorRow implements EventHandler<ActionEvent> {
 
     public SplitMenuButton getButton() {
         return button;
+    }
+    
+    public Label getLabel() {
+        return label;
     }
 
     @Override
