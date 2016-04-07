@@ -43,6 +43,7 @@ public class PC {
 
         
         //Definición de los componentes que forman un ordenador.
+        
         components = new ArrayList<>();
         
         components.add(new Component(new ComponentDescription(

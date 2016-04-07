@@ -11,7 +11,7 @@ package model;
  */
 public class ComponentTextDescriptions {
     public static final String CASE =
-            "La torre es la estructura metálica o plástica, cuya función consiste en "
+            "La torre es la estructura metálica o plástica cuya función consiste en "
             + "albergar y proteger los componentes internos del ordenador.";
     
     public static final String MOTHERBOARD = 

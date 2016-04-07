@@ -3,20 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package util;
+package controller.ComponentButton;
 
 /**
  *
  * @author Rafa
  */
-public class Pair<A, B> {
-    public A first;
-    public B second;
-    
-    public Pair(A first, B second) {
-        this.first = first;
-        this.second = second;
-    }
-    
-    
+public interface ComponentButton {
+    public void setText(String text);
+    public String getText();
+    public void update();
 }

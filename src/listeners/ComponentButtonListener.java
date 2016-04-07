@@ -5,14 +5,14 @@
  */
 package listeners;
 
+import controller.ComponentButton.ComponentButton;
 import model.ComponentDescription;
-import controller.ConfiguratorRow;
 
 /**
  *
  * @author Rafa
  */
-public interface ConfiguratorRowListener {
-    public void setProductFor(ComponentDescription component, ConfiguratorRow row);
-    public void removeProductFor(ComponentDescription component, ConfiguratorRow row);
+public interface ComponentButtonListener {
+    public void setProductFor(ComponentDescription component, ComponentButton btn);
+    public void removeProductFor(ComponentDescription component, ComponentButton btn);
 }

@@ -3,69 +3,44 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.ComponentButton;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SplitMenuButton;
-import listeners.ConfiguratorRowListener;
 import model.Component;
+import model.ComponentDescription;
+import listeners.ComponentButtonListener;
 
 /**
  *
  * @author Rafa
  */
-public class ConfiguratorRow implements EventHandler<ActionEvent> {
-
-    private final Node[] nodes;
-    private final SplitMenuButton button;
-    private final Label label;
-    private final ConfiguratorRowListener listener;
+public class SplitMenuComponentButton extends SplitMenuButton implements ComponentButton, EventHandler<ActionEvent> {
     private final MenuItem remove;
-    private Component component;
-
-    public ConfiguratorRow(Component component, ConfiguratorRowListener listener) {
-        nodes = new Node[2];
+    private final ComponentButtonListener listener;
+    private final Component component;
+    public SplitMenuComponentButton(Component component, ComponentButtonListener listener) {
+        this.component = component;
+        this.setOnAction(this);
+        this.setText(component.toString());
+        
         this.listener = listener;
-
-        label = new Label(component.getComponentDescription().getName());
-
-        button = new SplitMenuButton();
-        button.setOnAction(this);
-        button.setText(component.toString());
+        
         remove = new MenuItem("Eliminar");
         remove.setOnAction(this);
         remove.setDisable(true);
-        button.getItems().add(remove);
-        button.setMaxWidth(Double.MAX_VALUE);
-
-        nodes[0] = label;
-        nodes[1] = button;
-
-        this.component = component;
         
-        update();
-    }
-
-    public Node[] getNodes() {
-        return nodes;
-    }
-
-    public SplitMenuButton getButton() {
-        return button;
-    }
-    
-    public Label getLabel() {
-        return label;
+        this.getItems().add(remove);
+        this.setMaxWidth(Double.MAX_VALUE);
+        
     }
 
     @Override
     public void handle(ActionEvent event) {
         if (listener != null) {
-            if (event.getSource() == button) {
+            if (event.getSource() == this) {
                 listener.setProductFor(component.getComponentDescription(), this);
             } else if (event.getSource() == remove) {
                 listener.removeProductFor(component.getComponentDescription(), this);
@@ -81,6 +56,7 @@ public class ConfiguratorRow implements EventHandler<ActionEvent> {
         remove.setDisable(true);
     }
 
+    @Override
     public void update() {
         if (component.hasProduct()) {
             enableRemove();
@@ -88,7 +64,7 @@ public class ConfiguratorRow implements EventHandler<ActionEvent> {
         else {
             disableRemove();
         }
-        button.setText(component.toString());
+        setText(component.toString());
     }
 
 }

@@ -63,6 +63,24 @@
                      <font>
                         <Font size="16.0" />
                      </font></Label>
+                  <VBox alignment="BOTTOM_RIGHT" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <HBox prefWidth="200.0">
+                           <children>
+                              <Label text="Precio total (IVA incl.): ">
+                                 <font>
+                                    <Font size="19.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="price" text="0">
+                                 <font>
+                                    <Font size="19.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
                </children>
             </VBox>
          </children>

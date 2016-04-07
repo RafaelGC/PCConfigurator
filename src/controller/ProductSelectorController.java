@@ -20,6 +20,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableRow;
@@ -70,9 +71,9 @@ public class ProductSelectorController implements Initializable, EventHandler<Wi
     public void initialize(URL url, ResourceBundle rb) {
         selectedProduct = null;
 
-        descriptionColumn.setCellValueFactory(new PropertyValueFactory<Product, String>("description"));
-        priceColumn.setCellValueFactory(new PropertyValueFactory<Product, String>("price"));
-        stockColumn.setCellValueFactory(new PropertyValueFactory<Product, String>("stock"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+        stockColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
 
         categoryColumn.setCellValueFactory(new Callback<CellDataFeatures<Product, String>, ObservableValue<String>>() {
             @Override
@@ -148,8 +149,15 @@ public class ProductSelectorController implements Initializable, EventHandler<Wi
     private void accept(ActionEvent event) {
 
         selectedProduct = productTable.getSelectionModel().getSelectedItem();
-
-        stage.close();
+        if (selectedProduct.getStock() < getAmount()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setHeaderText(null);
+            alert.setTitle("Aviso");
+            alert.setContentText("No hay tantos productos disponibles.");
+            alert.showAndWait();
+        } else {
+            stage.close();
+        }
     }
 
     @Override
@@ -188,7 +196,6 @@ public class ProductSelectorController implements Initializable, EventHandler<Wi
 
         List<Product> products = new ArrayList<>();
         for (Product.Category category : visibleCategories) {
-            //products.addAll(Database.getProductByCategoryAndDescription(category, newValue, true));
             products.addAll(Database.getProductByCategoryDescriptionAndPrice(category, search, minValue, maxValue, true));
         }
 

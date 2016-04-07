@@ -5,6 +5,8 @@
  */
 package controller;
 
+import controller.ComponentButton.ComponentButton;
+import controller.ComponentButton.SplitMenuComponentButton;
 import es.upv.inf.Product;
 import java.io.File;
 import java.io.IOException;
@@ -36,19 +38,20 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import listeners.ConfiguratorRowListener;
 import model.Component;
 import model.PC;
 import model.ComponentDescription;
 import model.Price;
 import util.Pair;
+import listeners.ComponentButtonListener;
+import util.SceneTransition;
 
 /**
  * FXML Controller class
  *
  * @author Rafa
  */
-public class ConfiguratorController implements Initializable, ConfiguratorRowListener {
+public class ConfiguratorController implements Initializable, ComponentButtonListener {
 
     Stage stage;
     @FXML
@@ -87,16 +90,20 @@ public class ConfiguratorController implements Initializable, ConfiguratorRowLis
         int rowCount = 0;
         Iterator<Component> it = currentPC.getEssentialComponents().iterator();
         while (it.hasNext()) {
-            ConfiguratorRow row = new ConfiguratorRow(it.next(), this);
-            essentialComponentsLayout.addRow(rowCount, row.getNodes());
+            Component c = it.next();
+            SplitMenuComponentButton btn = new SplitMenuComponentButton(c, this);
+            essentialComponentsLayout.addRow(rowCount, new Label(c.getComponentDescription().getName()),
+                                                       btn);
             rowCount++;
         }
 
         rowCount = 0;
         it = currentPC.getNonEssentialComponents().iterator();
         while (it.hasNext()) {
-            ConfiguratorRow row = new ConfiguratorRow(it.next(), this);
-            nonEssentialComponentsLayout.addRow(rowCount, row.getNodes());
+            Component c = it.next();
+            SplitMenuComponentButton btn = new SplitMenuComponentButton(c, this);
+            nonEssentialComponentsLayout.addRow(rowCount, new Label(c.getComponentDescription().getName()),
+                                                       btn);
             rowCount++;
         }
 
@@ -107,13 +114,13 @@ public class ConfiguratorController implements Initializable, ConfiguratorRowLis
     }
 
     @Override
-    public void setProductFor(ComponentDescription description, ConfiguratorRow row) {
+    public void setProductFor(ComponentDescription description, ComponentButton btn) {
 
         Pair<Product, Integer> productAmount = openProductSelectorWindow(description.getCategories());
         if (productAmount.first != null) {
 
             currentPC.addProduct(productAmount.first, productAmount.second);
-            row.update();
+            btn.update();
             System.out.println(currentPC.toString());
 
             updatePrice();
@@ -123,10 +130,10 @@ public class ConfiguratorController implements Initializable, ConfiguratorRowLis
     }
 
     @Override
-    public void removeProductFor(ComponentDescription description, ConfiguratorRow row) {
+    public void removeProductFor(ComponentDescription description, ComponentButton btn) {
         Component c = currentPC.getComponentByComponentDescription(description);
         c.setProduct(null);
-        row.update();
+        btn.update();
         updatePrice();
     }
 
@@ -186,41 +193,28 @@ public class ConfiguratorController implements Initializable, ConfiguratorRowLis
 
     @FXML
     private void next(ActionEvent event) {
-        try {
-            boolean open = true;
-
-            if (!currentPC.isComplete()) {
-                
-                ButtonType yes = new ButtonType("Sí", ButtonData.YES);
-                ButtonType no = new ButtonType("No", ButtonData.NO);
-                
-                Alert alert = new Alert(AlertType.CONFIRMATION);
-                alert.setHeaderText(null);
-                alert.getButtonTypes().clear();
-                alert.getButtonTypes().addAll(yes, no);
-                alert.setTitle("¿Seguro?");
-                alert.setContentText("No has seleccionado todos los componentes esenciales. ¿Seguro que has terminado de configurar tu PC?");
-                Optional<ButtonType> res = alert.showAndWait();
-                if (res.isPresent()) {
-                    if (res.get() != yes) {
-                        open = false;
-                    }
+        boolean open = true;
+        if (!currentPC.isComplete()) {
+            
+            ButtonType yes = new ButtonType("Sí", ButtonData.YES);
+            ButtonType no = new ButtonType("No", ButtonData.NO);
+            
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setHeaderText(null);
+            alert.getButtonTypes().clear();
+            alert.getButtonTypes().addAll(yes, no);
+            alert.setTitle("¿Seguro?");
+            alert.setContentText("No has seleccionado todos los componentes esenciales. ¿Seguro que has terminado de configurar tu PC?");
+            Optional<ButtonType> res = alert.showAndWait();
+            if (res.isPresent()) {
+                if (res.get() != yes) {
+                    open = false;
                 }
-                
             }
-
-            if (open) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Budget.fxml"));
-                Parent root = (Parent) loader.load();
-                BudgetController controller = loader.<BudgetController>getController();
-                controller.init(currentPC, this.stage);
-
-                Scene scene = new Scene(root);
-                stage.setScene(scene);
-                stage.show();
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(ConfiguratorController.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }
+        if (open) {
+            SceneTransition.<BudgetController>showView(stage, "/view/Budget.fxml").init(currentPC, stage);
         }
     }
 
@@ -239,5 +233,6 @@ public class ConfiguratorController implements Initializable, ConfiguratorRowLis
             Logger.getLogger(ConfiguratorController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
 
 }
