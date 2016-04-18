@@ -8,14 +8,14 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="486.0" prefWidth="619.0" spacing="15.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.ProductSelectorController">
+<VBox prefHeight="486.0" prefWidth="619.0" spacing="15.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ProductSelectorController">
   <children>
     <Label text="Selecciona un producto">
       <font>
         <Font size="36.0" />
       </font>
     </Label>
-    <FlowPane prefHeight="-1.0" prefWidth="-1.0">
+    <FlowPane hgap="30.0" prefHeight="-1.0" prefWidth="-1.0" vgap="10.0">
       <children>
         <HBox prefHeight="-1.0" prefWidth="-1.0">
           <children>
@@ -27,7 +27,7 @@
             <TextField fx:id="searchTextfield" prefWidth="200.0" />
           </children>
           <FlowPane.margin>
-            <Insets right="30.0" />
+            <Insets />
           </FlowPane.margin>
         </HBox>
         <HBox prefHeight="-1.0" prefWidth="-1.0">
@@ -46,14 +46,19 @@
             <TextField fx:id="maxPrice" disable="false" editable="true" prefWidth="50.0" promptText="25" />
           </children>
         </HBox>
+            <HBox>
+               <children>
+                  <CheckBox fx:id="inStock" mnemonicParsing="false" text="En stock" />
+               </children>
+            </HBox>
       </children>
     </FlowPane>
     <TableView fx:id="productTable" maxHeight="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
       <columns>
-        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="271.0" text="Descripción" fx:id="descriptionColumn" />
-        <TableColumn prefWidth="75.0" text="Precio" fx:id="priceColumn" />
-        <TableColumn prefWidth="75.0" text="Stock" fx:id="stockColumn" />
-        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="138.0" text="Categoría" fx:id="categoryColumn" />
+        <TableColumn fx:id="descriptionColumn" maxWidth="5000.0" minWidth="10.0" prefWidth="271.0" text="Descripción" />
+        <TableColumn fx:id="priceColumn" prefWidth="75.0" text="Precio" />
+        <TableColumn fx:id="stockColumn" prefWidth="75.0" text="Stock" />
+        <TableColumn fx:id="categoryColumn" maxWidth="5000.0" minWidth="10.0" prefWidth="138.0" text="Categoría" />
       </columns>
     </TableView>
     <HBox prefHeight="-1.0" prefWidth="200.0">

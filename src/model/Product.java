@@ -5,6 +5,9 @@
  */
 package model;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -14,7 +17,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author Rafa
  */
 @XmlRootElement(name = "product")
-@XmlType (namespace = "pcconfigurator")
+@XmlType(namespace = "pcconfigurator")
 public class Product extends es.upv.inf.Product {
 
     @XmlElement(name = "description")
@@ -25,7 +28,7 @@ public class Product extends es.upv.inf.Product {
     private final int stock;
     @XmlElement(name = "category")
     private final Category category;
-    
+
     public Product() {
         super(null, 0.d, 0, null);
         description = null;
@@ -33,19 +36,19 @@ public class Product extends es.upv.inf.Product {
         stock = 0;
         category = null;
     }
-    
+
     public Product(es.upv.inf.Product product) {
         this(product.getDescription(), product.getPrice(), product.getStock(), product.getCategory());
     }
-    
+
     public Product(String description, double price, int stock, Category category) {
         super(description, price, stock, category);
-        
+
         this.description = description;
         this.price = price;
         this.stock = stock;
         this.category = category;
-        
+
     }
 
     /**
@@ -75,8 +78,20 @@ public class Product extends es.upv.inf.Product {
     public Category getCategory() {
         return category;
     }
-    
-    
-    
+
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof Product) {
+            Product p = (Product) other;
+
+            return p.category.equals(this.category)
+                    && p.description.compareTo(description) == 0
+                    && p.price == this.price
+                    && p.stock == this.stock;
+
+        }
+        return false;
+    }
+
 
 }

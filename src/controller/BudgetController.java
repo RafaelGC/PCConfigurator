@@ -22,9 +22,9 @@ import javafx.print.PageLayout;
 import javafx.print.PageOrientation;
 import javafx.print.Paper;
 import javafx.print.PrinterJob;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -33,6 +33,7 @@ import javafx.stage.Stage;
 import model.Component;
 import model.PC;
 import model.Price;
+import util.SceneTransition;
 
 /**
  * FXML Controller class
@@ -112,17 +113,12 @@ public class BudgetController implements Initializable {
 
     @FXML
     private void back(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Configurator.fxml"));
-            Parent root = (Parent) loader.load();
-            ConfiguratorController controller = loader.<ConfiguratorController>getController();
-            controller.initStage(stage, pc);
-
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException ex) {
-            Logger.getLogger(BudgetController.class.getName()).log(Level.SEVERE, null, ex);
+        
+        if (pc.isAdvancedConfigurator()) {
+            SceneTransition.<ConfiguratorController>showView(stage, "/view/Configurator.fxml").initStage(stage, pc);
+        }
+        else {
+            SceneTransition.<NonEssentialComponentsChooserController>showView(stage, "/view/NonEssentialComponentsChooser.fxml").init(pc, stage);
         }
     }
 
@@ -137,7 +133,19 @@ public class BudgetController implements Initializable {
                 PageLayout layout = job.getPrinter().createPageLayout(Paper.A4, PageOrientation.PORTRAIT, 0, 0, 0, 0);
                 boolean success = job.printPage(layout, node);
                 if (success) {
+                    Alert alarm = new Alert(Alert.AlertType.INFORMATION);
+                    alarm.setTitle("Correcto");
+                    alarm.setHeaderText(null);
+                    alarm.setContentText("Correcto.");
+                    alarm.showAndWait();
                     job.endJob();
+                }
+                else {
+                    Alert alarm = new Alert(Alert.AlertType.ERROR);
+                    alarm.setTitle("Error");
+                    alarm.setHeaderText(null);
+                    alarm.setContentText("No se pudo imprimir.");
+                    alarm.showAndWait();
                 }
             }
         } catch (IOException ex) {

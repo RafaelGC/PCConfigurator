@@ -9,32 +9,20 @@ import controller.ComponentButton.ComponentButton;
 import controller.ComponentButton.DoubleComponentButton;
 import static controller.ConfiguratorController.openProductSelectorWindow;
 import es.upv.inf.Product;
-import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javax.imageio.ImageIO;
 import listeners.ComponentButtonListener;
 import model.Component;
 import model.ComponentDescription;
@@ -86,7 +74,7 @@ public class NonEssentialComponentsChooserController implements Initializable, C
                 ++y;
             }
         }
-        
+
         updatePrice();
     }
 
@@ -120,9 +108,22 @@ public class NonEssentialComponentsChooserController implements Initializable, C
         btn.update();
         updatePrice();
     }
-    
+
     public void updatePrice() {
         this.price.setText(pc.getPrice().getTotalPrice() + "" + Price.SYMBOL);
+    }
+
+    @FXML
+    private void changeName(ActionEvent event) {
+        TextInputDialog dialog = new TextInputDialog("Sin nombre");
+        dialog.setTitle("Nombre del PC");
+        dialog.setContentText("Asigna un nombre a este PC:");
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            pc.setName(result.get());
+        }
+
     }
 
 }

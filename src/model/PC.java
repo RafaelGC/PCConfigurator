@@ -37,10 +37,12 @@ public class PC {
     private ArrayList<Component> components;
     @XmlElement(name = "name")
     private String name;
+    @XmlElement(name = "advanced-configurator")
+    private boolean advancedConfigurator;
 
     public PC() {
         name = "Sin nombre";
-
+        advancedConfigurator = true;
         
         //Definición de los componentes que forman un ordenador.
         
@@ -249,6 +251,33 @@ public class PC {
      */
     public void setName(String name) {
         this.name = name;
+    }
+    
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof PC) {
+            PC c = (PC) other;
+            
+            return  this.name.compareTo(c.name) == 0 &&
+                    this.components.equals(c.components);
+            
+        }
+        
+        return false;
+    }
+
+    /**
+     * @return the advancedConfigurator
+     */
+    public boolean isAdvancedConfigurator() {
+        return advancedConfigurator;
+    }
+
+    /**
+     * @param advancedConfigurator the advancedConfigurator to set
+     */
+    public void setAdvancedConfigurator(boolean advancedConfigurator) {
+        this.advancedConfigurator = advancedConfigurator;
     }
 
 }

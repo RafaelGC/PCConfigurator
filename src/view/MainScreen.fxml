@@ -28,24 +28,27 @@
         <Label font="$x1" text="Nueva configuración" GridPane.columnIndex="2" GridPane.rowIndex="0" />
         <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
           <children>
-            <Button fx:id="computer1Button" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-1.0" mnemonicParsing="false" onAction="#preconfiguredPC" prefHeight="60.0" prefWidth="-1.0" style="&#10;" styleClass="big-button" text="PC Gama alta" />
-            <Button fx:id="computer2Button" maxWidth="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" onAction="#preconfiguredPC" prefHeight="60.0" styleClass="big-button" text="PC Gama media" />
-            <Button fx:id="computer3Button" maxWidth="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" onAction="#preconfiguredPC" prefHeight="60.0" styleClass="big-button" text="PC + Pantalla + Teclado" />
+            <Button fx:id="computer1Button" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-1.0" mnemonicParsing="false" onAction="#preconfiguredPC" prefHeight="60.0" prefWidth="-1.0" style="&#10;" styleClass="big-button" text="PC Gama alta" textAlignment="CENTER" wrapText="true" />
+            <Button fx:id="computer2Button" maxWidth="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" onAction="#preconfiguredPC" prefHeight="60.0" styleClass="big-button" text="PC Gama media" textAlignment="CENTER" wrapText="true" />
+            <Button fx:id="computer3Button" maxWidth="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" onAction="#preconfiguredPC" prefHeight="60.0" styleClass="big-button" text="PC + Pantalla + Teclado" textAlignment="CENTER" wrapText="true" />
           </children>
         </VBox>
         <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
           <children>
-            <Button maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-1.0" mnemonicParsing="false" onAction="#stepBySepConfigurator" prefHeight="60.0" prefWidth="-1.0" style="&#10;" text="Configurador paso a paso">
+            <Button maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-1.0" mnemonicParsing="false" onAction="#stepByStepConfigurator" prefHeight="60.0" prefWidth="-1.0" style="&#10;" text="Configurador paso a paso" textAlignment="CENTER" wrapText="true">
                      <styleClass>
                         <String fx:value="big-button" />
                         <String fx:value="primary" />
                      </styleClass></Button>
-            <Button maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-1.0" mnemonicParsing="false" onAction="#advancedConfigurator" prefHeight="60.0" prefWidth="-1.0" style="&#10;" styleClass="big-button" text="Configurador avanzado" />
+            <Button maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-1.0" mnemonicParsing="false" onAction="#advancedConfigurator" prefHeight="60.0" prefWidth="-1.0" style="&#10;" styleClass="big-button" text="Configurador avanzado" textAlignment="CENTER" wrapText="true" />
           </children>
         </VBox>
             <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="317.0" prefViewportWidth="223.0" style="-fx-background-color: transparent;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <content>
-                  <VBox fx:id="userConfigurationsLayout" spacing="5.0" style="-fx-background-color: transparent;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <VBox fx:id="userConfigurationsLayout" spacing="5.0" style="-fx-background-color: transparent;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <children>
+                        <Label fx:id="noPC" text="Todavía no has configurado ningún PC." textFill="#00000079" wrapText="true" />
+                     </children></VBox>
                </content>
             </ScrollPane>
       </children>
@@ -61,6 +64,11 @@
     </GridPane>
       <HBox alignment="TOP_RIGHT" prefWidth="200.0">
          <children>
+            <HBox alignment="BOTTOM_LEFT" prefWidth="200.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Hyperlink onAction="#about" text="Acerca de" />
+               </children>
+            </HBox>
             <Button maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-1.0" mnemonicParsing="false" onAction="#loadConfiguration" prefHeight="60.0" prefWidth="-1.0" style="&#10;" text="Cargar configuración">
                <styleClass>
                   <String fx:value="big-button" />

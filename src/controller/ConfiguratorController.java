@@ -116,7 +116,8 @@ public class ConfiguratorController implements Initializable, ComponentButtonLis
     @Override
     public void setProductFor(ComponentDescription description, ComponentButton btn) {
 
-        Pair<Product, Integer> productAmount = openProductSelectorWindow(description.getCategories());
+        Pair<Product, Integer> productAmount = 
+                openProductSelectorWindow(description.getCategories());
         if (productAmount.first != null) {
 
             currentPC.addProduct(productAmount.first, productAmount.second);
@@ -168,6 +169,7 @@ public class ConfiguratorController implements Initializable, ComponentButtonLis
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Guardar ordenador");
         fileChooser.getExtensionFilters().add(new ExtensionFilter("Archivo XML (*.xml)", "*.xml"));
+        fileChooser.setInitialFileName(pc.getName());
         File file = fileChooser.showSaveDialog(stage);
         if (file != null) {
             if (pc.saveToFile(file)) {

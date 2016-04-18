@@ -16,7 +16,7 @@
          <children>
             <Label text="Componentes esenciales">
                <font>
-                  <Font size="36.0" />
+                  <Font size="29.0" />
                </font>
                <FlowPane.margin>
                   <Insets right="25.0" />
@@ -24,7 +24,7 @@
             </Label>
             <Label fx:id="componentName" text="Nombre del componente">
                <font>
-                  <Font size="18.0" />
+                  <Font name="System Italic" size="21.0" />
                </font>
             </Label>
          </children>
@@ -59,32 +59,32 @@
                         </Label>
                      </children>
                   </HBox>
-                  <Label fx:id="whatIs" text="---" wrapText="true">
+                  <Label fx:id="whatIs" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="---" wrapText="true" VBox.vgrow="ALWAYS">
                      <font>
                         <Font size="16.0" />
                      </font></Label>
-                  <VBox alignment="BOTTOM_RIGHT" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
-                     <children>
-                        <HBox prefWidth="200.0">
-                           <children>
-                              <Label text="Precio total (IVA incl.): ">
-                                 <font>
-                                    <Font size="19.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="price" text="0">
-                                 <font>
-                                    <Font size="19.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
                </children>
             </VBox>
          </children>
       </GridPane>
+      <HBox spacing="20.0">
+         <children>
+            <HBox alignment="TOP_RIGHT" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label text="Precio total (IVA incl.): ">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="price" text="0">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
       <HBox alignment="BOTTOM_RIGHT" prefWidth="200.0" VBox.vgrow="NEVER">
          <children>
             <HBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">

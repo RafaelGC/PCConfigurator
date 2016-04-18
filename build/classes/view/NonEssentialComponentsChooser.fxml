@@ -13,7 +13,7 @@
    <children>
       <Label text="Componentes opcionales">
          <font>
-            <Font size="36.0" />
+            <Font size="29.0" />
          </font>
       </Label>
       <GridPane fx:id="gridLayout" hgap="10.0" vgap="10.0" VBox.vgrow="ALWAYS">
@@ -49,6 +49,11 @@
                   <Button fx:id="back" mnemonicParsing="false" onAction="#back" styleClass="big-button" text="Volver" />
                </children>
             </HBox>
+            <Button mnemonicParsing="false" onAction="#changeName" styleClass="big-button" text="Cambiar nombre del PC">
+               <HBox.margin>
+                  <Insets right="15.0" />
+               </HBox.margin>
+            </Button>
             <Button mnemonicParsing="false" onAction="#finish" text="Terminar">
                <styleClass>
                   <String fx:value="big-button" />

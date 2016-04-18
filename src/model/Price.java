@@ -38,7 +38,7 @@ public class Price {
         return price +""+ SYMBOL + ", IVA: " + tax + SYMBOL + " (" + TAX + "%)" + " TOTAL: " + totalPrice + SYMBOL;
     }
     
-    private static double round2(double num) {
+    public static double round2(double num) {
         return Math.round(num*100)/100.d;
     }
 }

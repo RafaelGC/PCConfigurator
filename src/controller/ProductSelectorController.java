@@ -21,6 +21,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableRow;
@@ -31,6 +32,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import model.CategoryNames;
+import model.PC;
 
 /**
  * FXML Controller class
@@ -63,6 +65,8 @@ public class ProductSelectorController implements Initializable, EventHandler<Wi
     private TextField minPrice;
     @FXML
     private TextField maxPrice;
+    @FXML
+    private CheckBox inStock;
 
     /**
      * Initializes the controller class.
@@ -90,9 +94,7 @@ public class ProductSelectorController implements Initializable, EventHandler<Wi
         amountTextfield.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (newValue.matches("\\d*")) {
-                    int value = Integer.parseInt(newValue);
-                } else {
+                if (!newValue.matches("[0-9]*")) {
                     amountTextfield.setText(oldValue);
                 }
             }
@@ -109,6 +111,10 @@ public class ProductSelectorController implements Initializable, EventHandler<Wi
             return row;
         });
 
+        inStock.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            search();
+        });
+
     }
 
     private void setStage(Stage stage) {
@@ -123,8 +129,10 @@ public class ProductSelectorController implements Initializable, EventHandler<Wi
         for (Product.Category category : categories) {
             products.addAll(Database.getProductByCategory(category));
         }
-
+        
         updateTable(products);
+        
+        
     }
 
     private void updateTable(List<Product> products) {
@@ -149,13 +157,18 @@ public class ProductSelectorController implements Initializable, EventHandler<Wi
     private void accept(ActionEvent event) {
 
         selectedProduct = productTable.getSelectionModel().getSelectedItem();
-        if (selectedProduct.getStock() < getAmount()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setHeaderText(null);
-            alert.setTitle("Aviso");
-            alert.setContentText("No hay tantos productos disponibles.");
-            alert.showAndWait();
-        } else {
+        if (selectedProduct != null) {
+            if (selectedProduct.getStock() < getAmount()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setHeaderText(null);
+                alert.setTitle("Aviso");
+                alert.setContentText("No hay tantos productos disponibles.");
+                alert.showAndWait();
+            } else {
+                stage.close();
+            }
+        }
+        else {
             stage.close();
         }
     }
@@ -170,9 +183,13 @@ public class ProductSelectorController implements Initializable, EventHandler<Wi
 
     @Override
     public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-        String search = searchTextfield.textProperty() == observable ? newValue : searchTextfield.getText();
-        String minPriceString = minPrice.textProperty() == observable ? newValue : minPrice.getText();
-        String maxPriceString = maxPrice.textProperty() == observable ? newValue : maxPrice.getText();
+        search();
+    }
+
+    void search() {
+        String search = searchTextfield.getText();
+        String minPriceString = minPrice.getText();
+        String maxPriceString = maxPrice.getText();
 
         double minValue = 0.f, maxValue = Double.MAX_VALUE;
 
@@ -196,7 +213,7 @@ public class ProductSelectorController implements Initializable, EventHandler<Wi
 
         List<Product> products = new ArrayList<>();
         for (Product.Category category : visibleCategories) {
-            products.addAll(Database.getProductByCategoryDescriptionAndPrice(category, search, minValue, maxValue, true));
+            products.addAll(Database.getProductByCategoryDescriptionAndPrice(category, search, minValue, maxValue, inStock.isSelected()));
         }
 
         updateTable(products);

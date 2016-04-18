@@ -83,7 +83,7 @@ public class Component {
     }
 
     public double getTotalPrice() {
-        return getProduct().getPrice() * getAmount();
+        return Price.round2(getProduct().getPrice() * getAmount());
     }
 
     @Override
@@ -91,7 +91,7 @@ public class Component {
         if (product != null) {
             return product.getDescription() + "\t" + " x" + getAmount();
         } else {
-            return "Sin seleccionar";
+            return "Seleccionar";
         }
     }
 
@@ -102,8 +102,21 @@ public class Component {
             }
             return product.getDescription() + "\t" + getProduct().getPrice() + Price.SYMBOL + " x" + getAmount() + " = " + getTotalPrice() + Price.SYMBOL;
         } else {
-            return "Sin seleccionar";
+            return "Seleccionar";
         }
+    }
+
+    public boolean equals(Object e) {
+
+        if (e instanceof Component) {
+            Component other = (Component) e;
+            return this.amount == other.amount
+                    && this.componentDescription.equals(other.getComponentDescription())
+                    && ((this.product == null && other.product == null) ||
+                            (this.product != null && other.product !=null && this.product.equals(other.getProduct())));
+        }
+
+        return false;
     }
 
 }

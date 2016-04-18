@@ -22,7 +22,9 @@ public class PCContainer {
     }
     
     public PC addPC(PC computer) {
-        computers.add(computer);
+        if (!computers.contains(computer)) {
+            computers.add(computer);
+        }
         return computer;
     }
     

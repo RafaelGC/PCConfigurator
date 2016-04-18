@@ -35,6 +35,8 @@ public class SplitMenuComponentButton extends SplitMenuButton implements Compone
         this.getItems().add(remove);
         this.setMaxWidth(Double.MAX_VALUE);
         
+        update();
+        
     }
 
     @Override

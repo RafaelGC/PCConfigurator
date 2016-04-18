@@ -9,25 +9,22 @@ import controller.ComponentButton.ComponentButton;
 import controller.ComponentButton.SplitMenuComponentButton;
 import static controller.ConfiguratorController.openProductSelectorWindow;
 import es.upv.inf.Product;
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Component;
@@ -70,7 +67,6 @@ public class StepByStepController implements Initializable, ComponentButtonListe
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         mainLayout.getStylesheets().add(getClass().getResource("/css/CustomButtons.css").toExternalForm());
-
     }
 
     public void init(PC pc, Stage stage) {
@@ -156,12 +152,12 @@ public class StepByStepController implements Initializable, ComponentButtonListe
     @Override
     public void setProductFor(ComponentDescription component, ComponentButton btn) {
         Pair<Product, Integer> productAmount
-                = openProductSelectorWindow(essentialComponents.get(currentComponentIndex).getComponentDescription().getCategories());
+                = openProductSelectorWindow(
+                        essentialComponents.get(currentComponentIndex).getComponentDescription().getCategories());
         if (productAmount.first != null) {
 
             pc.addProduct(productAmount.first, productAmount.second);
             btn.update();
-            System.out.println(pc.toString());
 
             updateNextButton();
             updatePrice();
